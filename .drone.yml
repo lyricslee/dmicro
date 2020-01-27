@@ -1,0 +1,206 @@
+kind: pipeline
+name: dmicro
+
+steps:
+  - name: build micro
+    image: golang:1.13.6-alpine3.11
+    volumes:
+      - name: cache
+        path: /go
+      - name: gocache
+        path: /root/.cache/go-build
+    environment:
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOPROXY: https://mirrors.aliyun.com/goproxy,direct
+    commands:
+      - go version
+      - go env
+      - cd gate/micro
+      - go build -o micro
+  - name: build dd
+    image: golang:1.13.6-alpine3.11
+    volumes:
+      - name: cache
+        path: /go
+      - name: gocache
+        path: /root/.cache/go-build
+    environment:
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOPROXY: https://mirrors.aliyun.com/goproxy,direct
+    commands:
+      - go version
+      - go env
+      - cd web/dd
+      - go build -o dd
+  - name: build gid
+    image: golang:1.13.6-alpine3.11
+    volumes:
+      - name: cache
+        path: /go
+      - name: gocache
+        path: /root/.cache/go-build
+    environment:
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOPROXY: https://mirrors.aliyun.com/goproxy,direct
+    commands:
+      - go version
+      - go env
+      - cd srv/gid
+      - go build -o gid
+  - name: build passport
+    image: golang:1.13.6-alpine3.11
+    volumes:
+      - name: cache
+        path: /go
+      - name: gocache
+        path: /root/.cache/go-build
+    environment:
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOPROXY: https://mirrors.aliyun.com/goproxy,direct
+    commands:
+      - go version
+      - go env
+      - cd srv/passport
+      - go build -o passport
+  - name: build user
+    image: golang:1.13.6-alpine3.11
+    volumes:
+      - name: cache
+        path: /go
+      - name: gocache
+        path: /root/.cache/go-build
+    environment:
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOPROXY: https://mirrors.aliyun.com/goproxy,direct
+    commands:
+      - go version
+      - go env
+      - cd srv/user
+      - go build -o user
+  - name: publish micro
+    image: plugins/docker:18.09
+    settings:
+      username: admin
+      password: Harbor12345
+      context: gate/micro
+      dockerfile: gate/micro/Dockerfile
+      repo: 192.168.56.190/dmicro/micro
+      registry: 192.168.56.190
+      tags: latest
+      insecure: true
+  - name: publish dd
+    image: plugins/docker:18.09
+    settings:
+      username: admin
+      password: Harbor12345
+      context: web/dd
+      dockerfile: web/dd/Dockerfile
+      repo: 192.168.56.190/dmicro/dd
+      registry: 192.168.56.190
+      tags: latest
+      insecure: true
+  - name: publish gid
+    image: plugins/docker:18.09
+    settings:
+      username: admin
+      password: Harbor12345
+      context: srv/gid
+      dockerfile: srv/gid/Dockerfile
+      repo: 192.168.56.190/dmicro/gid
+      registry: 192.168.56.190
+      tags: latest
+      insecure: true
+  - name: publish passport
+    image: plugins/docker:18.09
+    settings:
+      username: admin
+      password: Harbor12345
+      context: srv/passport
+      dockerfile: srv/passport/Dockerfile
+      repo: 192.168.56.190/dmicro/passport
+      registry: 192.168.56.190
+      tags: latest
+      insecure: true
+  - name: publish user
+    image: plugins/docker:18.09
+    settings:
+      username: admin
+      password: Harbor12345
+      context: srv/user
+      dockerfile: srv/user/Dockerfile
+      repo: 192.168.56.190/dmicro/user
+      registry: 192.168.56.190
+      tags: latest
+      insecure: true
+  - name: deploy micro
+    image: appleboy/drone-ssh:1.5.5
+    settings:
+      host: 192.168.56.188
+      username: root
+      password: vagrant
+      port: 22
+      script:
+        - docker pull 192.168.56.190/dmicro/micro
+        - docker rm -f micro || true
+        - docker image prune -f
+        - docker run -d --name micro -p 8082:8082 192.168.56.190/dmicro/micro web
+  - name: deploy dd
+    image: appleboy/drone-ssh:1.5.5
+    settings:
+      host: 192.168.56.188
+      username: root
+      password: vagrant
+      port: 22
+      script:
+        - docker pull 192.168.56.190/dmicro/dd
+        - docker rm -f dd || true
+        - docker image prune -f
+        - docker run -d --name dd 192.168.56.190/dmicro/dd
+  - name: deploy gid
+    image: appleboy/drone-ssh:1.5.5
+    settings:
+      host: 192.168.56.188
+      username: root
+      password: vagrant
+      port: 22
+      script:
+        - docker pull 192.168.56.190/dmicro/gid
+        - docker rm -f gid || true
+        - docker image prune -f
+        - docker run -d --name gid 192.168.56.190/dmicro/gid
+  - name: deploy passport
+    image: appleboy/drone-ssh:1.5.5
+    settings:
+      host: 192.168.56.188
+      username: root
+      password: vagrant
+      port: 22
+      script:
+        - docker pull 192.168.56.190/dmicro/passport
+        - docker rm -f passport || true
+        - docker image prune -f
+        - docker run -d --name passport 192.168.56.190/dmicro/passport
+  - name: deploy user
+    image: appleboy/drone-ssh:1.5.5
+    settings:
+      host: 192.168.56.188
+      username: root
+      password: vagrant
+      port: 22
+      script:
+        - docker pull 192.168.56.190/dmicro/user
+        - docker rm -f user || true
+        - docker image prune -f
+        - docker run -d --name user 192.168.56.190/dmicro/user
+volumes:
+  - name: cache
+    host:
+      path: /tmp/drone-cache/go
+  - name: gocache
+    host:
+      path: /tmp/drone-cache/go_build

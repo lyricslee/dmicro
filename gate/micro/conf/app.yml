@@ -1,4 +1,4 @@
-deploy_env: local
+deploy_env: dev
 micro:
   register_ttl: 30
   register_interval: 15
