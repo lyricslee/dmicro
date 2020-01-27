@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package dmicro.topic;
+
+message UserInfo {
+    int64 user_id = 1;
+    string mobile =2;
+}
+
+message UserCreated {
+    int64 id = 1;
+    string topic = 2;
+    UserInfo info = 3;
+}

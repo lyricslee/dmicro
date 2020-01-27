@@ -1,0 +1,26 @@
+deploy_env: local
+micro:
+  server_name: "go.micro.srv.user"
+  server_version: "1.0.0"
+  register_ttl: 30
+  register_interval: 15
+  registry: etcd
+  registry_address:
+    - "192.168.56.189:2379"
+logger:
+  level: "debug"
+  filename: "app.log"
+  max_size: 100
+  max_backups: 10
+  max_age: 7
+  compress: false
+tracer:
+  addr: "192.168.56.189:6831"
+stan:
+  addrs:
+    - "nats://192.168.56.189:4222"
+  cluster_id: "test-cluster"
+  durable_name: "go.micro.srv.user"
+  queue: "go.micro.srv.user"
+mysql:
+  data_source: "root:123456@tcp(192.168.56.189:3306)/dm_user"

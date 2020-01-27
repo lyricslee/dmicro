@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package go.micro.srv.user;
+
+service User {
+	rpc Create(Request) returns (Response) {}
+}
+
+message Request {
+    int64 user_id = 1;
+	string mobile = 2;
+}
+
+message Response {
+}

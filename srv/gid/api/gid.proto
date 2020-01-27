@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package go.micro.srv.gid;
+
+service Gid {
+	rpc GetOne(Request) returns (Response) {}
+	rpc GetMulti(MultiRequest) returns (MultiResponse) {}
+}
+
+message Request {
+}
+
+message Response {
+	int64 id = 1;
+}
+
+message MultiRequest {
+	int32 count = 1;
+}
+
+message MultiResponse {
+	repeated int64 ids = 1;
+}
