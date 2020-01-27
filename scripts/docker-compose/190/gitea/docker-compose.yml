@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: gitea_mysql
+    restart: always
+    ports:
+      - "13306:3306"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD=gitea
+      - MYSQL_DATABASE=gitea
+      - MYSQL_DATABASE_CHARSET=utf8mb4
+      - MYSQL_DATABASE_COLLATION=utf8mb4_general_ci
+    volumes:
+      - /root/docker/data/gitea/mysql:/var/lib/mysql
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    restart: always
+    ports:
+      - "10022:22"
+      - "10080:3000"
+    environment:
+      - TZ=Asia/Shanghai
+      - DB_TYPE=mysql
+      - DB_HOST=gitea_mysql:3306
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD=gitea
+    volumes:
+      - /root/docker/data/gitea/gitea:/data
+    depends_on:
+      - mysql

@@ -1,0 +1,12 @@
+version: '3'
+services:
+  nats-streaming:
+    image: nats-streaming:latest
+    container_name: nats-streaming
+    restart: always
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - /root/docker/data/nats-streaming:/datastore
+    command: -store file -dir datastore

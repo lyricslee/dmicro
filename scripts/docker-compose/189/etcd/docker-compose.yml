@@ -1,0 +1,11 @@
+version: '3'
+services:
+  etcd:
+    image: quay.io/coreos/etcd:latest
+    container_name: etcd
+    restart: always
+    ports:
+      - "2379:2379"
+    volumes:
+      - /root/docker/data/etcd:/etcd-data
+    command: etcd --data-dir=/etcd-data --name node1 --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379
