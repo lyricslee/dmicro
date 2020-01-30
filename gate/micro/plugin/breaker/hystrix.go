@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/afex/hystrix-go/hystrix"
 	"github.com/micro/cli"
@@ -29,6 +30,17 @@ func (*breaker) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			log.Debugf("breaker plugins received: %s %s", r.Method, r.RequestURI)
+
+			if r.URL.Path == "/" ||
+				r.URL.Path == "/stats" ||
+				r.URL.Path == "/client" ||
+				r.URL.Path == "/registry" ||
+				r.URL.Path == "/terminal" ||
+				strings.HasPrefix(r.URL.Path, "/ws") {
+				h.ServeHTTP(w, r)
+				return
+			}
+
 			name := r.Method + " " + r.RequestURI
 			dw := &util.HttpWriter{ResponseWriter: w}
 			err := hystrix.Do(name, func() error {

@@ -174,6 +174,8 @@ github.com/go-playground/locales v0.13.0 h1:HyWk6mgj5qFqCT5fjGBuRArbVDfE4hi8+e8c
 github.com/go-playground/locales v0.13.0/go.mod h1:taPMhCMXrRLJO55olJkUXHZBHCxTMfnGwq/HNwmWNS8=
 github.com/go-playground/universal-translator v0.16.0 h1:X++omBR/4cE2MNg91AoC3rmGrCjJ8eAeUP/K/EKx4DM=
 github.com/go-playground/universal-translator v0.16.0/go.mod h1:1AnU7NaIRDWWzGEKwgtJRd2xk99HeFyHw3yid4rvQIY=
+github.com/go-redis/redis v6.15.6+incompatible h1:H9evprGPLI8+ci7fxQx6WNZHJSb7be8FqJQRhdQZ5Sg=
+github.com/go-redis/redis v6.15.6+incompatible/go.mod h1:NAIEuMOZ/fxfXJIrKDQDz8wamY7mA7PouImQ2Jvg6kA=
 github.com/go-sql-driver/mysql v1.4.1/go.mod h1:zAC/RDZ24gD3HViQzih4MyKcchzm+sOG5ZlKdlhCg5w=
 github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
@@ -348,6 +350,9 @@ github.com/micro/cli v0.2.0/go.mod h1:jRT9gmfVKWSS6pkKcXQ8YhUyj6bzwxK8Fp5b0Y7qNn
 github.com/micro/go-micro v1.16.0/go.mod h1:A0F58bHLh2m0LAI9QyhvmbN8c1cxhAZo3cM6s+iDsrM=
 github.com/micro/go-micro v1.18.0 h1:gP70EZVHpJuUIT0YWth192JmlIci+qMOEByHm83XE9E=
 github.com/micro/go-micro v1.18.0/go.mod h1:klwUJL1gkdY1MHFyz+fFJXn52dKcty4hoe95Mp571AA=
+github.com/micro/go-plugins v1.5.1 h1:swcFD7ynCTUo98APqIEIbPu2XMd6yVGTnI8PqdnCwOQ=
+github.com/micro/go-plugins/broker/nats v0.0.0-20200119172437-4fe21aa238fd h1:QTHUm4cGysU2/otF8a7nMVm7rcZuZznzJZd4l1hXABw=
+github.com/micro/go-plugins/broker/nats v0.0.0-20200119172437-4fe21aa238fd/go.mod h1:bvKwErhTuUz91MfBRW0ZTWuoGNaFFPfwMkCIiHgOxNQ=
 github.com/micro/mdns v0.3.0 h1:bYycYe+98AXR3s8Nq5qvt6C573uFTDPIYzJemWON0QE=
 github.com/micro/mdns v0.3.0/go.mod h1:KJ0dW7KmicXU2BV++qkLlmHYcVv7/hHnbtguSWt9Aoc=
 github.com/micro/micro v1.18.0 h1:v+xiQOXbT9xxotLwu1nJM81t4FbruBxZSSyIdhUfujM=

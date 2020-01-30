@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package dmicro.topic;
+
+message L2A {
+    int32 proto = 1;
+    int32 appid = 2;
+    uint64 uid = 3;
+    int32 platform = 4;
+    int32 type = 5;
+    int32 cmd = 6;
+    int32 seq = 7;
+	bytes payload = 8;
+}
+
+message Req {
+    int32 appid = 1;
+    uint64 uid = 2;
+    int32 platform = 3;
+    int32 type = 4;
+    int32 cmd = 5;
+    int32 seq = 6;
+	bytes body = 7;
+}
+
+// umsg -> appserver
+message IM {
+    int32 appid = 1;
+    uint64 uid = 2;
+    int32 terminal = 3;
+    int32 type = 4;
+    int32 cmd = 5;
+    int32 seq = 6;
+	bytes body = 7;
+}

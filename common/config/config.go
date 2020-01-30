@@ -65,7 +65,7 @@ type Tracer struct {
 type Redis struct {
 	Addr     string `json:"addr,omitempty"`
 	Password string `json:"password,omitempty"`
-	MaxIdle  int    `json:"max_idle,omitempty"`
+	DB       int    `json:"db,omitempty"`
 }
 
 type Hystrix struct {

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package go.micro.srv.ums;
+
+service Ums {
+	rpc Push(PushRequest) returns (PushResponse) {}
+	rpc G2L(G2LRequest) returns (G2LResponse) {}
+	rpc A2L(A2LRequest) returns (A2LResponse) {}
+}
+
+message G2LRequest {
+    int32 proto = 1;
+    int32 appid = 2;
+    uint64 uid = 3;
+    int32 platform = 4;
+    int32 type = 5;
+    int32 cmd = 6;
+    int32 seq = 7;
+	bytes payload = 8;
+}
+
+message G2LResponse {
+}
+
+message A2LRequest {
+    int32 proto = 1;
+    int32 appid = 2;
+    uint64 uid = 3;
+    int32 platform = 4;
+    int32 type = 5;
+    int32 cmd = 6;
+    int32 seq = 7;
+	bytes payload = 8;
+}
+
+message A2LResponse {
+}
+
+// appserver -> ums
+message PushRequest {
+    int32 typ = 1;
+    int32 appid = 2;
+    uint64 uid = 3;
+    int32 cmd = 4;
+	bytes payload = 5;
+}
+
+message PushResponse {
+    int32 errno = 1;
+    string errmsg = 2;
+}

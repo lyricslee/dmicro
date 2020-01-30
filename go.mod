@@ -5,15 +5,19 @@ go 1.13
 require (
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
+	github.com/coreos/etcd v3.3.17+incompatible
 	github.com/deckarep/golang-set v1.7.1
 	github.com/gin-gonic/gin v1.5.0
+	github.com/go-redis/redis v6.15.6+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-xorm/xorm v0.7.9
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1
+	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/websocket v1.4.1
 	github.com/micro/cli v0.2.0
 	github.com/micro/go-micro v1.18.0
+	github.com/micro/go-plugins/broker/nats v0.0.0-20200119172437-4fe21aa238fd
 	github.com/micro/micro v1.18.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/nats-io/nats-streaming-server v0.16.2 // indirect

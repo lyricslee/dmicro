@@ -38,6 +38,7 @@ func (*auth) Handler() plugin.Handler {
 				r.URL.Path == "/client" ||
 				r.URL.Path == "/registry" ||
 				r.URL.Path == "/terminal" ||
+				strings.HasPrefix(r.URL.Path, "/ws") ||
 				strings.HasPrefix(r.URL.Path, "/dd/passport/smslogin") ||
 				strings.HasPrefix(r.URL.Path, "/dd/passport/sms") ||
 				strings.HasPrefix(r.URL.Path, "/dd/passport/login") ||

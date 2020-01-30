@@ -2,6 +2,7 @@ package trace
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/micro/cli"
 	"github.com/micro/micro/plugin"
@@ -28,6 +29,16 @@ func (*trace) Commands() []cli.Command {
 func (*trace) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path == "/" ||
+				r.URL.Path == "/stats" ||
+				r.URL.Path == "/client" ||
+				r.URL.Path == "/registry" ||
+				r.URL.Path == "/terminal" ||
+				strings.HasPrefix(r.URL.Path, "/ws") {
+				h.ServeHTTP(w, r)
+				return
+			}
+
 			log.Debugf("trace plugins received: %s %s", r.Method, r.RequestURI)
 			spanCtx, _ := opentracing.GlobalTracer().Extract(opentracing.TextMap, opentracing.HTTPHeadersCarrier(r.Header))
 			sp := opentracing.GlobalTracer().StartSpan(r.URL.Path, opentracing.ChildOf(spanCtx))
