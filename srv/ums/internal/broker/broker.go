@@ -2,8 +2,8 @@ package broker
 
 import (
 	"dmicro/srv/ums/internal/config"
-	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-plugins/broker/nats"
+	"github.com/micro/go-micro/v2/broker"
+	"github.com/micro/go-micro/v2/broker/nats"
 	"sync"
 )
 

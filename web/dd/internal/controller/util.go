@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/micro/go-micro/metadata"
+	"github.com/micro/go-micro/v2/metadata"
 
 	mxcontext "dmicro/pkg/context"
 	"dmicro/web/dd/internal/middleware/tracer"

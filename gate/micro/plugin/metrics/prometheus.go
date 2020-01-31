@@ -3,8 +3,8 @@ package metrics
 import (
 	"net/http"
 
-	"github.com/micro/cli"
-	"github.com/micro/micro/plugin"
+	"github.com/micro/cli/v2"
+	"github.com/micro/micro/v2/plugin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -16,7 +16,7 @@ func (*metrics) Flags() []cli.Flag {
 	return nil
 }
 
-func (*metrics) Commands() []cli.Command {
+func (*metrics) Commands() []*cli.Command {
 	return nil
 }
 

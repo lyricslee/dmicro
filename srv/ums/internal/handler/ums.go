@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/micro/go-micro"
-	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-micro/client"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/broker"
+	"github.com/micro/go-micro/v2/client"
 
 	"dmicro/common/constant"
 	"dmicro/common/log"

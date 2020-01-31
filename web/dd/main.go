@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/micro/go-micro/web"
+	"github.com/micro/go-micro/v2/web"
 	"github.com/opentracing/opentracing-go"
 
 	"dmicro/common/log"

@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/google/uuid"
-	"github.com/micro/go-micro"
-	"github.com/micro/go-micro/broker"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/broker"
 
 	"dmicro/common/capx"
 	"dmicro/common/log"

@@ -4,9 +4,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/registry"
-	"github.com/micro/go-micro/web"
+	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-micro/v2/web"
 
 	"dmicro/common/config"
 )

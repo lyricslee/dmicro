@@ -3,10 +3,10 @@ package main
 import (
 	"time"
 
-	"github.com/micro/go-micro"
-	ccmd "github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/registry"
-	"github.com/micro/micro/cmd"
+	"github.com/micro/go-micro/v2"
+	ccmd "github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/micro/v2/cmd"
 
 	"dmicro/common/log"
 	"dmicro/gate/micro/config"

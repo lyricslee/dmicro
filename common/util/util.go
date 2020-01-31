@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/micro/go-micro/metadata"
+	"github.com/micro/go-micro/v2/metadata"
 
 	"dmicro/common/errors"
 	"dmicro/common/log"

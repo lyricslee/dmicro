@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/v2"
 
 	"dmicro/common/log"
 	"dmicro/common/service"

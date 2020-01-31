@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/gin-gonic/gin"
-	"github.com/micro/go-micro/metadata"
+	"github.com/micro/go-micro/v2/metadata"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
 

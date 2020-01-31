@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-xorm/xorm"
 	"github.com/golang/protobuf/proto"
-	"github.com/micro/go-micro"
-	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-micro/client"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/broker"
+	"github.com/micro/go-micro/v2/client"
 
 	"dmicro/common/capx/model"
 	"dmicro/common/log"
@@ -67,7 +67,7 @@ func StoreReceived(id int64, topic string, pb interface{}) (err error) {
 func Publish(id int64, topic string, msg interface{}) error {
 	log.Debugf("publish topic %s", topic)
 
-	p := micro.NewPublisher(topic, client.DefaultClient)
+	p := micro.NewEvent(topic, client.DefaultClient)
 	if err := p.Publish(context.Background(), msg); err != nil {
 		log.Error("publish err:", err)
 		updatePublished(id, map[string]interface{}{"status": 2})

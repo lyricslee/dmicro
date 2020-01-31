@@ -1,9 +1,10 @@
 package client
 
 import (
-	"github.com/micro/go-micro/client"
-	"github.com/micro/go-micro/client/selector"
-	"github.com/micro/go-micro/web"
+	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/client/grpc"
+	"github.com/micro/go-micro/v2/client/selector"
+	"github.com/micro/go-micro/v2/web"
 
 	passport "dmicro/srv/passport/api"
 )
@@ -13,9 +14,9 @@ var (
 )
 
 func Init(service web.Service) {
-	cli := client.NewClient(
+	cli := grpc.NewClient(
 		client.Registry(service.Options().Registry),
 		client.Selector(selector.NewSelector(selector.Registry(service.Options().Registry))),
 	)
-	PassportClient = passport.NewPassportService("", cli)
+	PassportClient = passport.NewPassportService("go.micro.srv.passport", cli)
 }

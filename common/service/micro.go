@@ -4,11 +4,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/micro/go-micro"
-	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/registry"
-	"github.com/micro/go-micro/transport"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/broker"
+	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-micro/v2/transport"
 
 	"dmicro/common/config"
 )

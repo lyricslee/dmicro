@@ -1,9 +1,9 @@
 package client
 
 import (
-	"github.com/micro/go-micro/client"
-	"github.com/micro/go-micro/client/selector"
-	"github.com/micro/go-micro/web"
+	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/client/selector"
+	"github.com/micro/go-micro/v2/web"
 
 	ums "dmicro/srv/ums/api"
 )
@@ -17,5 +17,5 @@ func Init(service web.Service) {
 		client.Registry(service.Options().Registry),
 		client.Selector(selector.NewSelector(selector.Registry(service.Options().Registry))),
 	)
-	UmsClient = ums.NewUmsService("", cli)
+	UmsClient = ums.NewUmsService("go.micro.srv.ums", cli)
 }

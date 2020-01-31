@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/v2"
 
 	gid "dmicro/srv/gid/api"
 	user "dmicro/srv/user/api"
@@ -13,8 +13,8 @@ var (
 )
 
 func Init(s micro.Service) {
-	gidClient = gid.NewGidService("", s.Client())
-	userClient = user.NewUserService("", s.Client())
+	gidClient = gid.NewGidService("go.micro.srv.gid", s.Client())
+	userClient = user.NewUserService("go.micro.srv.user", s.Client())
 }
 
 func GetGidClient() gid.GidService {

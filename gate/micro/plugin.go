@@ -4,7 +4,7 @@ import (
 	"dmicro/gate/micro/plugin/auth"
 	"dmicro/gate/micro/plugin/metrics"
 	"dmicro/gate/micro/plugin/trace"
-	"github.com/micro/micro/web"
+	"github.com/micro/micro/v2/web"
 )
 
 func init() {

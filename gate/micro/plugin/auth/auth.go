@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/micro/cli"
-	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/util/ctx"
-	"github.com/micro/micro/plugin"
+	"github.com/micro/cli/v2"
+	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2/util/ctx"
+	"github.com/micro/micro/v2/plugin"
 
 	"dmicro/common/log"
 	"dmicro/common/util"
@@ -25,7 +25,7 @@ func (*auth) Flags() []cli.Flag {
 	return nil
 }
 
-func (*auth) Commands() []cli.Command {
+func (*auth) Commands() []*cli.Command {
 	return nil
 }
 
@@ -62,7 +62,7 @@ func (*auth) Handler() plugin.Handler {
 }
 
 func (*auth) Init(*cli.Context) error {
-	passportClient = passport.NewPassportService("", *cmd.DefaultCmd.Options().Client)
+	passportClient = passport.NewPassportService("go.micro.srv.passport", *cmd.DefaultCmd.Options().Client)
 	return nil
 }
 

@@ -2,7 +2,7 @@ package client
 
 import (
 	ums "dmicro/srv/ums/api"
-	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/v2"
 )
 
 var (
@@ -10,5 +10,5 @@ var (
 )
 
 func Init(s micro.Service) {
-	UmsClient = ums.NewUmsService("", s.Client())
+	UmsClient = ums.NewUmsService("go.micro.srv.ums", s.Client())
 }

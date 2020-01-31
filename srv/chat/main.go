@@ -10,7 +10,7 @@ import (
 	"dmicro/srv/chat/internal/client"
 	"dmicro/srv/chat/internal/config"
 	"fmt"
-	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/v2"
 )
 
 func main() {

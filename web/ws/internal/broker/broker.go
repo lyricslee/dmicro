@@ -3,8 +3,8 @@ package broker
 import (
 	"fmt"
 
-	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-plugins/broker/nats"
+	"github.com/micro/go-micro/v2/broker"
+	"github.com/micro/go-micro/v2/broker/nats"
 
 	"dmicro/common/constant"
 	"dmicro/common/log"
