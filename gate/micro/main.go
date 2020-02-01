@@ -15,6 +15,7 @@ import (
 func main() {
 	config.Init()
 	log.Init(config.Logger)
+	initPlugin()
 
 	var opts []micro.Option
 	if config.Micro.RegisterTTL > 0 {

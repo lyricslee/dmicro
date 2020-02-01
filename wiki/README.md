@@ -1,5 +1,10 @@
+### 安装vuepress
+```
+yarn global add vuepress
+```
+
 ### 构建
-``` bash
+```
 yarn
 yarn dev    # 运行
 yarn build  # 构建

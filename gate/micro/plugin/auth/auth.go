@@ -1,13 +1,11 @@
 package auth
 
 import (
-	"net/http"
-	"strings"
-
 	"github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2/config/cmd"
 	"github.com/micro/go-micro/v2/util/ctx"
 	"github.com/micro/micro/v2/plugin"
+	"net/http"
 
 	"dmicro/common/log"
 	"dmicro/common/util"
@@ -19,6 +17,14 @@ var (
 )
 
 type auth struct {
+	opts Options
+}
+
+func newPlugin(opts ...Option) plugin.Plugin {
+	options := newOptions(opts...)
+	return &auth{
+		opts: options,
+	}
 }
 
 func (*auth) Flags() []cli.Flag {
@@ -29,20 +35,12 @@ func (*auth) Commands() []*cli.Command {
 	return nil
 }
 
-func (*auth) Handler() plugin.Handler {
+func (a *auth) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			log.Debugf("auth plugins received: %s %s", r.Method, r.RequestURI)
-			if r.URL.Path == "/" ||
-				r.URL.Path == "/stats" ||
-				r.URL.Path == "/client" ||
-				r.URL.Path == "/registry" ||
-				r.URL.Path == "/terminal" ||
-				strings.HasPrefix(r.URL.Path, "/ws") ||
-				strings.HasPrefix(r.URL.Path, "/dd/passport/smslogin") ||
-				strings.HasPrefix(r.URL.Path, "/dd/passport/sms") ||
-				strings.HasPrefix(r.URL.Path, "/dd/passport/login") ||
-				strings.HasPrefix(r.URL.Path, "/dd/passport/oauthlogin") {
+
+			if a.opts.skipperFunc(r) {
 				h.ServeHTTP(w, r)
 				return
 			}
@@ -70,6 +68,6 @@ func (*auth) String() string {
 	return "auth"
 }
 
-func NewPlugin() plugin.Plugin {
-	return new(auth)
+func NewPlugin(opts ...Option) plugin.Plugin {
+	return newPlugin(opts...)
 }

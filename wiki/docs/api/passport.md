@@ -4,7 +4,7 @@
 
 接口描述: 发送短信验证码
 
-请求路径:  /passport/sms
+请求路径:  /passport/Sms
 
 请求方法:  POST
 
@@ -35,7 +35,7 @@
 
 接口描述: 短信验证码登录
 
-请求路径:  /passport/smslogin
+请求路径:  /passport/SmsLogin
 
 请求方法:  POST
 
@@ -73,7 +73,7 @@
 
 接口描述: 设置密码
 
-请求路径:  /passport/setpwd
+请求路径:  /passport/SetPwd
 
 请求方法:  POST
 
@@ -109,7 +109,7 @@
 
 接口描述: 密码登录
 
-请求路径:  /passport/login
+请求路径:  /passport/Login
 
 请求方法:  POST
 
@@ -146,7 +146,7 @@
 
 接口描述: 第三方帐号登录
 
-请求路径:  /passport/oauthlogin
+请求路径:  /passport/OAuthLogin
 
 请求方法:  POST
 

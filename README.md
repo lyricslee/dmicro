@@ -37,14 +37,14 @@ docker run -d --name etcd \
 ```
 import sql scripts
 ```
-## gate micro
+## gate micro web
 ```
 cd gate/micro
 go build
 ./micro web
 ```
 ## web
-```shell
+```
 cd web/dd
 go build
 ./dd
@@ -68,9 +68,36 @@ go build
 ./user
 ```
 ## postman
+接口地址注意大小写，默认端口8082
 ```
 curl -X POST \
-  'http://localhost:8082/dd/passport/smslogin' \
+  'http://localhost:8082/dd/passport/SmsLogin' \
+  -H 'Content-Type: application/json' \
+  -H 'App-Id: 1' \
+  -d '{
+    "mobile": "13705918888",
+    "code": "123456"
+}'
+```
+以上使用的是web服务作为聚合api接口，还可以使用api服务作为聚合api接口
+
+## gate micro api
+```
+./micro api --handler=api
+```
+
+## api
+```
+cd api/dd
+go build
+./dd
+```
+
+## postman
+接口地址注意大小写，默认端口8080
+```
+curl -X POST \
+  'http://localhost:8080/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
   -H 'App-Id: 1' \
   -d '{

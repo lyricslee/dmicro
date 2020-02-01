@@ -1,4 +1,5 @@
 # 快速开始
+
 ## jaeger
 ```
 docker run -d --name jaeger \
@@ -17,21 +18,33 @@ docker run -d --name jaeger \
 docker run -d --name nats-streaming \
   -p 4222:4222 \
   -p 8222:8222 \
-  -v /var/docker/nats-streaming:/datastore \
+  -v /var/lib/docker-data/nats-streaming:/datastore \
   nats-streaming:latest -store file -dir datastore
+```
+## etcd
+```
+docker run -d --name etcd \
+  -p 2379:2379 \
+  -v /var/lib/docker-data/etcd:/etcd-data \
+  quay.io/coreos/etcd:latest \
+  etcd \
+  --data-dir=/etcd-data \
+  --name node1 \
+  --listen-client-urls http://0.0.0.0:2379 \
+  --advertise-client-urls http://0.0.0.0:2379
 ```
 ## database
 ```
 import sql scripts
 ```
-## gate micro
+## gate micro web
 ```
 cd gate/micro
 go build
 ./micro web
 ```
 ## web
-```shell
+```
 cd web/dd
 go build
 ./dd
@@ -55,30 +68,40 @@ go build
 ./user
 ```
 ## postman
+接口地址注意大小写，默认端口8082
 ```
 curl -X POST \
-  http://localhost:8080/xdd/passport/smslogin \
-  -H 'Accept: */*' \
-  -H 'App-Id: 1' \
-  -H 'App-Version: 1.0.0' \
-  -H 'Cache-Control: no-cache' \
-  -H 'Connection: keep-alive' \
+  'http://localhost:8082/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
-  -H 'Device-Id: abc' \
-  -H 'Host: localhost:8080' \
-  -H 'Model: ' \
-  -H 'Net: WIFI' \
-  -H 'Os-Type: ios' \
-  -H 'Os-Version: 10.0' \
-  -H 'Postman-Token: 58767350-445b-411e-b6ac-98ea2989b673,95ecd2f6-ed52-4c35-9e4b-116dbe82e913' \
-  -H 'Resolution: 800*600' \
-  -H 'Token: ' \
-  -H 'User-Agent: PostmanRuntime/7.13.0' \
-  -H 'User-Id: 0' \
-  -H 'accept-encoding: gzip, deflate' \
-  -H 'cache-control: no-cache' \
+  -H 'App-Id: 1' \
   -d '{
-	"mobile": "13803456789",
-	"code": "123456"
+    "mobile": "13705918888",
+    "code": "123456"
+}'
+```
+以上使用的是web服务作为聚合api接口，还可以使用api服务作为聚合api接口
+
+## gate micro api
+```
+./micro api --handler=api
+```
+
+## api
+```
+cd api/dd
+go build
+./dd
+```
+
+## postman
+接口地址注意大小写，默认端口8080
+```
+curl -X POST \
+  'http://localhost:8080/dd/passport/SmsLogin' \
+  -H 'Content-Type: application/json' \
+  -H 'App-Id: 1' \
+  -d '{
+    "mobile": "13705918888",
+    "code": "123456"
 }'
 ```

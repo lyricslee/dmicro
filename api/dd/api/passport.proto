@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package go.micro.api.passport;
+
+import "github.com/micro/go-micro/v2/api/proto/api.proto";
+
+service Passport {
+    rpc Sms (go.api.Request) returns (go.api.Response) {}
+    rpc SmsLogin (go.api.Request) returns (go.api.Response) {}
+    rpc SetPwd (go.api.Request) returns (go.api.Response) {}
+    rpc Login (go.api.Request) returns (go.api.Response) {}
+    rpc OAuthLogin (go.api.Request) returns (go.api.Response) {}
+}

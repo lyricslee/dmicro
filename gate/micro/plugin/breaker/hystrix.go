@@ -3,12 +3,10 @@ package breaker
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
 	"github.com/afex/hystrix-go/hystrix"
 	"github.com/micro/cli/v2"
 	"github.com/micro/micro/v2/plugin"
+	"net/http"
 
 	"dmicro/common/log"
 	"dmicro/common/util"
@@ -16,6 +14,14 @@ import (
 )
 
 type breaker struct {
+	opts Options
+}
+
+func newPlugin(opts ...Option) plugin.Plugin {
+	options := newOptions(opts...)
+	return &breaker{
+		opts: options,
+	}
 }
 
 func (*breaker) Flags() []cli.Flag {
@@ -26,17 +32,12 @@ func (*breaker) Commands() []*cli.Command {
 	return nil
 }
 
-func (*breaker) Handler() plugin.Handler {
+func (b *breaker) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			log.Debugf("breaker plugins received: %s %s", r.Method, r.RequestURI)
 
-			if r.URL.Path == "/" ||
-				r.URL.Path == "/stats" ||
-				r.URL.Path == "/client" ||
-				r.URL.Path == "/registry" ||
-				r.URL.Path == "/terminal" ||
-				strings.HasPrefix(r.URL.Path, "/ws") {
+			if b.opts.skipperFunc(r) {
 				h.ServeHTTP(w, r)
 				return
 			}
@@ -97,6 +98,6 @@ func (*breaker) String() string {
 	return "breaker"
 }
 
-func NewPlugin() plugin.Plugin {
-	return new(breaker)
+func NewPlugin(opts ...Option) plugin.Plugin {
+	return newPlugin(opts...)
 }

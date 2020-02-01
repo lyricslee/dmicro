@@ -73,7 +73,7 @@ func Publish(id int64, topic string, msg interface{}) error {
 		updatePublished(id, map[string]interface{}{"status": 2})
 		return err
 	} else {
-		log.Debugf("Published %v\n", msg)
+		log.Debugf("Published %v", msg)
 		updatePublished(id, map[string]interface{}{"status": 1})
 		return nil
 	}

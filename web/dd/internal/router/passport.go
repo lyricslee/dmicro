@@ -7,9 +7,9 @@ import (
 )
 
 func RegisterPassportRouter(g *gin.RouterGroup, c *controller.PassportController) {
-	POST(g, "/passport/login", c.Login, "用户登入")
-	POST(g, "/passport/sms", c.Sms, "获取验证码")
-	POST(g, "/passport/smslogin", c.SmsLogin, "短信验证码登录")
-	POST(g, "/passport/oauthlogin", c.OauthLogin, "第三方账号登录")
-	POST(g, "/passport/setpwd", c.SetPwd, "设置密码")
+	POST(g, "/passport/Login", c.Login, "用户登入")
+	POST(g, "/passport/Sms", c.Sms, "获取验证码")
+	POST(g, "/passport/SmsLogin", c.SmsLogin, "短信验证码登录")
+	POST(g, "/passport/OauthLogin", c.OauthLogin, "第三方账号登录")
+	POST(g, "/passport/SetPwd", c.SetPwd, "设置密码")
 }

@@ -10,6 +10,14 @@ import (
 
 // https://www.cnblogs.com/chenqionghe/p/10494868.html
 type metrics struct {
+	opts Options
+}
+
+func newPlugin(opts ...Option) plugin.Plugin {
+	options := newOptions(opts...)
+	return &metrics{
+		opts: options,
+	}
 }
 
 func (*metrics) Flags() []cli.Flag {
@@ -42,6 +50,6 @@ func (*metrics) String() string {
 	return "metrics"
 }
 
-func NewPlugin() plugin.Plugin {
-	return new(metrics)
+func NewPlugin(opts ...Option) plugin.Plugin {
+	return newPlugin(opts...)
 }

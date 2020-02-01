@@ -9,7 +9,7 @@ API 与用户端通讯使用HTTPS 协议
 > - https://api.dmicro.cn  # 正式环境     
 ### 3、版本
 将API的版本号放入URL,参考 [Github](https://developer.github.com/v3/media/#request-specific-version)
-> https://api.robotck.cn`/v1/`
+> https://api.dmicro.cn/v1/
 ### 4、路径
 路径又称"终点"（endpoint），表示API的具体网址。
 
