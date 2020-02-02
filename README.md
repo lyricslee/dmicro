@@ -1,6 +1,11 @@
 # dmicro
 
-## jaeger
+## 目录
+- [快速开始](#快速开始)
+- [UMS统一消息系统](#UMS统一消息系统)
+
+## 快速开始
+### jaeger
 ```
 docker run -d --name jaeger \
   -e COLLECTOR_ZIPKIN_HTTP_PORT=9411 \
@@ -13,7 +18,7 @@ docker run -d --name jaeger \
   -p 9411:9411 \
   jaegertracing/all-in-one:latest
 ```
-## nats-streaming
+### nats-streaming
 ```
 docker run -d --name nats-streaming \
   -p 4222:4222 \
@@ -21,7 +26,7 @@ docker run -d --name nats-streaming \
   -v /var/lib/docker-data/nats-streaming:/datastore \
   nats-streaming:latest -store file -dir datastore
 ```
-## etcd
+### etcd
 ```
 docker run -d --name etcd \
   -p 2379:2379 \
@@ -33,41 +38,41 @@ docker run -d --name etcd \
   --listen-client-urls http://0.0.0.0:2379 \
   --advertise-client-urls http://0.0.0.0:2379
 ```
-## database
+### database
 ```
 import sql scripts
 ```
-## gate micro web
+### gate micro web
 ```
 cd gate/micro
 go build
 ./micro web
 ```
-## web
+### web
 ```
 cd web/dd
 go build
 ./dd
 ```
-## gid
+### gid
 ```
 cd srv/gid
 go build
 ./gid
 ```
-## passport
+### passport
 ```
 cd srv/passport
 go build
 ./passport
 ```
-## user
+### user
 ```
 cd srv/user
 go build
 ./user
 ```
-## postman
+### postman
 接口地址注意大小写，默认端口8082
 ```
 curl -X POST \
@@ -81,19 +86,19 @@ curl -X POST \
 ```
 以上使用的是web服务作为聚合api接口，还可以使用api服务作为聚合api接口
 
-## gate micro api
+### gate micro api
 ```
 ./micro api --handler=api
 ```
 
-## api
+### api
 ```
 cd api/dd
 go build
 ./dd
 ```
 
-## postman
+### postman
 接口地址注意大小写，默认端口8080
 ```
 curl -X POST \
@@ -104,4 +109,42 @@ curl -X POST \
     "mobile": "13705918888",
     "code": "123456"
 }'
+```
+
+## UMS统一消息系统
+### 架构
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/ums.png">
+
+### 运行micro
+```
+cd gate/micro
+go build
+./micro web
+```
+
+### 统一消息系统网关
+```
+cd web/ws
+go build
+./ws
+```
+
+### 统一消息系统逻辑服务器
+```
+cd srv/ums
+go build
+./ums
+```
+
+### 运行聊天应用服务器
+```
+cd srv/chat
+go build
+./chat
+```
+
+### 运行web chat demo
+```
+cd examples/chat
+用浏览器打开chat.html文件
 ```
