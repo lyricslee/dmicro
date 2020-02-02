@@ -2,9 +2,9 @@
 
 ## 配置gitea OAuth2授权drone登录
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/1.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/1.png">
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/2.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/2.png">
 
 
 请记住客户端ID与客户端密钥，将用于docker-compse.yml中
@@ -84,13 +84,13 @@ docker-compose up -d
 ## 配置
 
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/3.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/3.png">
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/4.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/4.png">
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/5.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/5.png">
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/6.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/6.png">
 
 ## .drone.yml
 
@@ -98,4 +98,4 @@ docker-compose up -d
 
 ## 提交代码触发CI CD
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/drone/7.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/7.png">

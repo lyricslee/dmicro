@@ -50,15 +50,15 @@ http://192.168.56.190:10080/install
 
 ### 数据库设置
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/gitea/1.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/gitea/1.png">
 
 ### 基础设置
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/gitea/2.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/gitea/2.png">
 
 ### 添加管理员
 
-<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/gitea/3.png">
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/gitea/3.png">
 
 如果此处不添加管理员，后续新注册的第一个用户即为管理员
 **建议在此添加管理员，因为此处密码可以设置为简单密码，方便记忆。后续注册用户不可用简单密码。**
