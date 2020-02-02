@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="learn javascript by www.liaoxuefeng.com">
+    <title>websocket</title>
+    <link rel="stylesheet" href="./static/css/bootstrap.css">
+    <script src="./static/js/jquery.min.js"></script>
+    <script src="./static/js/bootstrap.js"></script>
+</head>
+
+<body>
+    <script>
+        const PING = 1
+        const PONG = 2
+        const REQ  = 3
+        const RSP  = 4
+        function addMessage(msg, d) {
+            var c = "red";
+            var speaker = "[客户端]";
+            if (d === 1) {
+                c = "blue";
+                speaker = "[服务器]";
+            }
+
+            $('#message-list').append("<div style='margin-bottom:15px;'><div class='media-body'>"+
+                "<span style='color:"+c+"'>"+speaker+"</span>"+"<span> "+msg+"</span></div></div>")
+
+            $('#message-list').parent().animate({
+                scrollTop: $('#message-list').height()
+            }, 1000);
+        }
+
+        $(function () {
+            var ws = new WebSocket('ws://localhost:8082/ws/join?appid=1&uid=1&plat=1');
+            addMessage("等待服务器Websocket握手包...");
+            ws.onmessage = function(evt) {
+                var data = evt.data;
+                console.log(data);
+                var msg = JSON.parse(data);
+                if (msg.type == RSP) {
+                    addMessage(msg.payload, 1);
+                }else if (msg.type == PONG) {
+                    addMessage("收到服务器心跳应答包.", 1)
+                }
+            };
+
+            ws.onopen = function() {
+                addMessage("收到服务器Websocket握手包.");
+                addMessage("Websocket连接已建立.", 1)
+
+                setInterval(function () {
+                    var msg = {
+                        "type": PING
+                    }
+                    addMessage("发送心跳包.")
+                    ws.send(JSON.stringify(msg));
+                },60000)
+            }
+
+            ws.onclose = function (evt) {
+                console.log('[closed] ' + evt.code);
+                var input = $('#form-chat').find('input[type=text]');
+                input.attr('placeholder', 'WebSocket disconnected.');
+                input.attr('disabled', 'disabled');
+                addMessage("与服务器断开连接.", 1)
+            };
+
+            ws.onerror = function (code, msg) {
+                console.log('[ERROR] ' + code + ': ' + msg);
+            };
+
+            $('#form-chat').submit(function (e) {
+                e.preventDefault();
+                var input = $(this).find('input[type=text]');
+                var text = input.val().trim();
+                console.log('[chat] ' + text);
+                if (text) {
+                    input.val('');
+                    addMessage(text)
+                    var msg = {
+                        "type": REQ,
+                        "payload": text
+                    }
+                    ws.send(JSON.stringify(msg));
+
+                }
+            });
+        });
+    </script>
+
+    <div class="container">
+        <h1 style="text-align:center;">Web Chat Demo</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-th-list"></span> 消息窗口</h3>
+            </div>
+            <div class="panel-body">
+                <div style="height:400px; overflow-x:hidden; overflow-y:scroll;">
+                    <div id="message-list">
+                    </div>
+                </div>
+                <div>
+                    <form id="form-chat" action="#0">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="A good day, isn't it?">
+                            <span class="input-group-btn"><button class="btn btn-default" type="submit">Go</button></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

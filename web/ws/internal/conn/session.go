@@ -10,6 +10,7 @@ import (
 
 	"dmicro/common/constant"
 	"dmicro/common/log"
+	"dmicro/web/ws/internal/config"
 	"dmicro/web/ws/internal/dao"
 )
 
@@ -145,7 +146,7 @@ func (sess *session) Close() {
 	server.Del(sess)
 	log.Debug("连接关闭")
 
-	client := dao.GetClient()
+	client := dao.GetRedisClient()
 	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
 	client.Del(key)
 
@@ -176,10 +177,9 @@ func (sess *session) Start() {
 	// TODO: auth
 	server.Add(sess)
 
-	client := dao.GetClient()
+	client := dao.GetRedisClient()
 	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
-	gateid := 1
-	if err := client.Set(key, gateid, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {
+	if err := client.Set(key, config.GateId, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {
 		log.Error(err)
 		sess.Close()
 		return
@@ -218,6 +218,9 @@ func (sess *session) handleTextMessage(msg *wsMessage) {
 		log.Error(err)
 		return
 	}
+	req.AppId = int32(sess.appid)
+	req.Uid = sess.uid
+	req.Platform = int32(sess.platform)
 	if req.Type == constant.PING {
 		sess.handlePing(req)
 		return
@@ -299,6 +302,13 @@ func (sess *session) handlePing(req *Message) (rsp *Message, err error) {
 			sess.Close()
 			return
 		}
+	}
+
+	client := dao.GetRedisClient()
+	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
+	if err = client.Set(key, config.GateId, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {
+		log.Error(err)
+		return
 	}
 
 	return

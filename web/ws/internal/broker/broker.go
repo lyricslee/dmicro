@@ -27,7 +27,7 @@ func Init() {
 	}
 
 	// TODO: config gateid
-	topic := fmt.Sprintf(constant.TOPIC_L2G_PREFIX, "1")
+	topic := fmt.Sprintf(constant.TOPIC_L2G_PREFIX, config.GateId)
 	if _, err := b.Subscribe(topic, handleL2G); err != nil {
 		log.Fatalf("Broker subscribe error: %v", err)
 	}

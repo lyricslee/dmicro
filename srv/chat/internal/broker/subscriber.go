@@ -32,6 +32,7 @@ func handleReq(ctx context.Context, msg *topic.L2A) (err error) {
 	req.Cmd = msg.Cmd
 	req.Seq = msg.Seq
 	req.Payload = msg.Payload
+	log.Debug(req)
 	_, err = client.UmsClient.A2L(context.Background(), req)
 	return
 }

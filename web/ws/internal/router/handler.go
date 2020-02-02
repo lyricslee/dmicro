@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/websocket"
@@ -61,6 +62,11 @@ func join(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Error("Upgrade: ", err)
 		return
+	}
+
+	// 踢掉旧连的连接
+	if sess := conn.GetServer().Get(fmt.Sprintf("%d:%d:%d", appid, uid, plat)); sess != nil {
+		sess.Close()
 	}
 
 	sess := conn.NewSession(appid, plat, uid, ws)

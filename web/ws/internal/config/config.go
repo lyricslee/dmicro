@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/spf13/viper"
 
 	"dmicro/common/config"
@@ -15,6 +17,8 @@ var (
 	NatsBroker *natsBroker
 
 	Redis *config.Redis
+
+	GateId int
 )
 
 type natsBroker struct {
@@ -37,4 +41,9 @@ func Init() {
 	Redis.Addr = viper.GetString("redis.addr")
 	Redis.Password = viper.GetString("redis.password")
 	Redis.DB = viper.GetInt("redis.db")
+
+	GateId = viper.GetInt("gate_id")
+	if GateId == 0 {
+		log.Fatal("gate id未配置")
+	}
 }

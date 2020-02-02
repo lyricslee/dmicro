@@ -16,10 +16,10 @@ import (
 )
 
 func initPlugin() {
-	initMetrics()
-	initTrace()
-	initBreaker()
-	initAuth()
+	//initMetrics()
+	//initTrace()
+	//initBreaker()
+	//initAuth()
 }
 
 func checkPrefix(s string, prefixes ...string) bool {
@@ -42,6 +42,9 @@ func initAuth() {
 			}
 			// 统一消息网关认证由自身负责，所以这里放行
 			if strings.HasPrefix(r.URL.Path, "/ws") {
+				return true
+			}
+			if strings.HasPrefix(r.URL.Path, "/chat") {
 				return true
 			}
 			// 公共接口放行
@@ -82,6 +85,7 @@ func initBreaker() {
 				checkPrefix(r.URL.Path, "/stats", "/client", "/registry", "/terminal") {
 				return true
 			}
+
 			return false
 		}),
 	))
@@ -115,6 +119,11 @@ func initTrace() {
 			if strings.HasPrefix(r.URL.Path, "/ws") {
 				return true
 			}
+
+			if strings.HasPrefix(r.URL.Path, "/chat") {
+				return true
+			}
+
 			return false
 		}),
 	))

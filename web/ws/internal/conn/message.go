@@ -101,6 +101,7 @@ func handleReq(sess *session, req *Message, mtyp int) {
 	r.Seq = req.Seq
 	r.Payload = req.Payload
 
+	log.Debug(r)
 	client.UmsClient.G2L(context.Background(), r)
 }
 

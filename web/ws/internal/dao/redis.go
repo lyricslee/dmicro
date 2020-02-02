@@ -13,7 +13,7 @@ var (
 	onceRedisClient sync.Once
 )
 
-func GetClient() *redis.Client {
+func GetRedisClient() *redis.Client {
 	onceRedisClient.Do(func() {
 		redisClient = redis.NewClient(&redis.Options{
 			Addr:     config.Redis.Addr,

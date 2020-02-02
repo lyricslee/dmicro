@@ -17,15 +17,19 @@ type Server struct {
 }
 
 var (
-	server = NewServer()
+	server     *Server
+	onceServer sync.Once
 )
 
-func NewServer() *Server {
-	s := &Server{
-		sessions: make(map[*session]bool),
-		users:    make(map[string]*session),
-	}
-	return s
+func GetServer() *Server {
+	onceServer.Do(func() {
+		server = &Server{
+			sessions: make(map[*session]bool),
+			users:    make(map[string]*session),
+		}
+	})
+
+	return server
 }
 
 func WriteTextMessage(m *Message) (err error) {
@@ -116,6 +120,13 @@ func (s *Server) Del(sess *session) {
 	id := fmt.Sprintf("%d:%d:%d", sess.appid, sess.uid, sess.platform)
 	delete(s.users, id)
 	DecOnlineNum()
+}
+
+func (s *Server) Get(id string) (sess *session) {
+	s.Lock()
+	defer s.Unlock()
+	sess = s.users[id]
+	return
 }
 
 type Stats struct {

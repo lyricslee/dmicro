@@ -1,9 +1,9 @@
 package main
 
 import (
-	"dmicro/api/dd/internal/client"
 	"github.com/micro/go-micro/v2"
 
+	"dmicro/api/dd/internal/client"
 	"dmicro/api/dd/internal/config"
 	"dmicro/api/dd/internal/handler"
 	"dmicro/common/log"

@@ -23,3 +23,5 @@ redis:
   addr: "192.168.56.189:6379"
   password: "123456"
   db: 0
+gate_id: 1
+

@@ -50,7 +50,7 @@ func (this *UmsHandler) G2L(ctx context.Context, req *ums.G2LRequest, rsp *ums.G
 	log.Debug(req)
 	// 直接转发给应用服务器
 	topic := fmt.Sprintf(constant.TOPIC_L2A_PREFIX, req.Appid)
-	p := micro.NewPublisher(topic, client.DefaultClient)
+	p := micro.NewEvent(topic, client.DefaultClient)
 	if err := p.Publish(context.Background(), req); err != nil {
 		log.Error(err)
 		return err
@@ -72,8 +72,8 @@ func (this *UmsHandler) handleRsp(ctx context.Context, req *ums.A2LRequest, rsp 
 	)
 	rc := dao.GetClient()
 	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, req.Appid, req.Uid, req.Platform)
-	gateid, _ := rc.Get(key).Result()
-	log.Debug("gateid", gateid)
+	result, _ := rc.Get(key).Result()
+	gateid, _ := convert.ConvertInt(result)
 	topic = fmt.Sprintf(constant.TOPIC_L2G_PREFIX, gateid)
 
 	m := &broker.Message{}
