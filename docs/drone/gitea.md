@@ -1,0 +1,64 @@
+# gitea安装配置
+
+## docker-compose.yml
+
+ ```yaml
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: gitea_mysql
+    restart: always
+    ports:
+      - "13306:3306"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD=gitea
+      - MYSQL_DATABASE=gitea
+      - MYSQL_DATABASE_CHARSET=utf8mb4
+      - MYSQL_DATABASE_COLLATION=utf8mb4_general_ci
+    volumes:
+      - /root/docker/data/gitea/mysql:/var/lib/mysql
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    restart: always
+    ports:
+      - "10022:22"
+      - "10080:3000"
+    environment:
+      - TZ=Asia/Shanghai
+      - DB_TYPE=mysql
+      - DB_HOST=gitea_mysql:3306
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD=gitea
+    volumes:
+      - /root/docker/data/gitea/gitea:/data
+    depends_on:
+      - mysql
+ ```
+
+## 安装
+
+### 打开浏览器访问
+
+http://192.168.56.190:10080/install
+
+### 数据库设置
+
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/gitea/1.png">
+
+### 基础设置
+
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/gitea/2.png">
+
+### 添加管理员
+
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/gitea/drone/img/gitea/3.png">
+
+如果此处不添加管理员，后续新注册的第一个用户即为管理员
+**建议在此添加管理员，因为此处密码可以设置为简单密码，方便记忆。后续注册用户不可用简单密码。**
