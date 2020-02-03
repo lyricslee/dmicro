@@ -3,7 +3,7 @@
 ## 目录
 - [快速开始](#快速开始)
 - [UMS统一消息系统](#UMS统一消息系统)
-- [drone CI CD环境搭建指南]
+- [drone CI CD环境搭建指南](#drone CI CD环境搭建指南)
   - [vagrant环境搭建](docs/drone/vagrant.md)
   - [gitea安装配置](docs/drone/gitea.md)
   - [私有仓库harbor安装配置](docs/drone/harbor.md)
@@ -120,6 +120,11 @@ curl -X POST \
 ### 架构
 <img src="https://github.com/fztcjjl/dmicro/raw/master/docs/ums.png">
 
+### redis
+```
+docker run -d --name redis -p 6379:6379 redis
+```
+
 ### 运行micro
 ```
 cd gate/micro
@@ -153,3 +158,13 @@ go build
 cd examples/chat
 用浏览器打开chat.html文件
 ```
+
+## drone CI CD环境搭建指南
+- [vagrant环境搭建](docs/drone/vagrant.md)
+- [gitea安装配置](docs/drone/gitea.md)
+- [私有仓库harbor安装配置](docs/drone/harbor.md)
+- [drone安装配置](docs/drone/drone.md)
+
+效果图：
+
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/drone/7.png">

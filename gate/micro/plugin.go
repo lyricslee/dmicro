@@ -16,10 +16,10 @@ import (
 )
 
 func initPlugin() {
-	//initMetrics()
-	//initTrace()
-	//initBreaker()
-	//initAuth()
+	initMetrics()
+	initTrace()
+	initBreaker()
+	initAuth()
 }
 
 func checkPrefix(s string, prefixes ...string) bool {
@@ -44,10 +44,7 @@ func initAuth() {
 			if strings.HasPrefix(r.URL.Path, "/ws") {
 				return true
 			}
-			if strings.HasPrefix(r.URL.Path, "/chat") {
-				return true
-			}
-			// 公共接口放行
+			// 公共接口放行，即访客可访问
 			if checkPrefix(r.URL.Path,
 				"/dd/passport/SmsLogin",
 				"/dd/passport/Sms",
@@ -62,7 +59,7 @@ func initAuth() {
 
 	_ = api.Register(auth.NewPlugin(
 		auth.WithSkipperFunc(func(r *http.Request) bool {
-			// 公共接口放行
+			// 公共接口放行，即访客可访问
 			if checkPrefix(r.URL.Path,
 				"/dd/passport/SmsLogin",
 				"/dd/passport/Sms",
@@ -117,10 +114,6 @@ func initTrace() {
 			}
 			// 统一消息网关认证由自身负责，所以这里放行
 			if strings.HasPrefix(r.URL.Path, "/ws") {
-				return true
-			}
-
-			if strings.HasPrefix(r.URL.Path, "/chat") {
 				return true
 			}
 

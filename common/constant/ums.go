@@ -15,3 +15,7 @@ const (
 	TYPE_WEB     = 3
 	TYPE_MINIAPP = 4
 )
+
+const (
+	REDIS_KEY_CONNID = "ums:connid:appid:%d:uid:%d:plat:%d"
+)

@@ -1,6 +1,7 @@
 package breaker
 
 import (
+	"dmicro/common/util"
 	"errors"
 	"fmt"
 	"github.com/afex/hystrix-go/hystrix"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 
 	"dmicro/common/log"
-	"dmicro/common/util"
 	"dmicro/gate/micro/config"
 )
 
@@ -43,23 +43,25 @@ func (b *breaker) Handler() plugin.Handler {
 			}
 
 			name := r.Method + " " + r.RequestURI
-			dw := &util.HttpWriter{ResponseWriter: w}
+			sct := &util.StatusCodeTracker{ResponseWriter: w}
 			err := hystrix.Do(name, func() error {
 				defer func() {
 					if r := recover(); r != nil {
 						log.Errorf("panic recovered: %v", r)
 					}
 				}()
-				h.ServeHTTP(dw, r)
 
-				if dw.Status >= http.StatusBadRequest {
-					errmsg := fmt.Sprintf("%d %s", dw.Status, http.StatusText(dw.Status))
+				h.ServeHTTP(sct.WrappedResponseWriter(), r)
+
+				if sct.Status >= http.StatusBadRequest {
+					errmsg := fmt.Sprintf("%d %s", sct.Status, http.StatusText(sct.Status))
 					return errors.New(errmsg)
 				}
+
 				return nil
 			}, func(err error) error {
 				log.Error(err)
-				util.WriteError(dw, err)
+				util.WriteError(w, err)
 				return err
 			})
 			if err != nil {

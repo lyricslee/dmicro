@@ -54,9 +54,9 @@ func (t *trace) Handler() plugin.Handler {
 			ext.HTTPUrl.Set(sp, r.URL.Path)
 			ext.HTTPMethod.Set(sp, r.Method)
 
-			dw := &util.HttpWriter{ResponseWriter: w}
-			h.ServeHTTP(dw, r)
-			ext.HTTPStatusCode.Set(sp, uint16(dw.Status))
+			sct := &util.StatusCodeTracker{ResponseWriter: w}
+			h.ServeHTTP(sct.WrappedResponseWriter(), r)
+			ext.HTTPStatusCode.Set(sp, uint16(sct.Status))
 		})
 	}
 }
