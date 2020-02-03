@@ -6,6 +6,8 @@ import (
 	"github.com/micro/go-micro/v2/util/ctx"
 	"github.com/micro/micro/v2/plugin"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"dmicro/common/log"
 	"dmicro/common/util"
@@ -46,8 +48,17 @@ func (a *auth) Handler() plugin.Handler {
 			}
 
 			cx := ctx.FromRequest(r)
+			var err error
+			// Token
+			if token := strings.Join(r.Header["Token"], ","); token != "" {
+				_, err = passportClient.AuthToken(cx, &passport.AuthTokenRequest{})
+			} else {
+				// Cookie
+				cookie, _ := r.Cookie("SESSION")
+				val, _ := url.QueryUnescape(cookie.Value)
+				_, err = passportClient.AuthCookie(cx, &passport.AuthCookieRequest{Cookie: val})
 
-			_, err := passportClient.ValidateToken(cx, &passport.TokenRequest{})
+			}
 			if err != nil {
 				log.Error(err)
 				util.WriteError(w, err)

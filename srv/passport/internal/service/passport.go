@@ -46,7 +46,7 @@ func GetPassportService() *PassportService {
 	return passportService
 }
 
-func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string, appId int) (token *passport.TokenInfo, err error) {
+func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string, appid int) (token *passport.TokenInfo, err error) {
 	var (
 		user *model.User
 	)
@@ -59,7 +59,7 @@ func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string, app
 	if user == nil {
 		token, err = p.register(ctx, mobile)
 	} else {
-		if token, err = p.updateToken(ctx, user.Id, appId); err != nil {
+		if token, err = p.updateToken(ctx, user.Id, appid); err != nil {
 			return nil, err
 		}
 	}
@@ -67,7 +67,7 @@ func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string, app
 	return
 }
 
-func (p *PassportService) Login(ctx context.Context, mobile, passwd string, appId int) (token *passport.TokenInfo, err error) {
+func (p *PassportService) Login(ctx context.Context, mobile, passwd string, appid int) (token *passport.TokenInfo, err error) {
 	var (
 		user *model.User
 	)
@@ -81,33 +81,33 @@ func (p *PassportService) Login(ctx context.Context, mobile, passwd string, appI
 	if err = bcrypt.CompareHashAndPassword([]byte(user.Passwd), []byte(passwd)); err != nil {
 		return nil, errors.ErrPasswordError
 	}
-	if token, err = p.updateToken(ctx, user.Id, appId); err != nil {
+	if token, err = p.updateToken(ctx, user.Id, appid); err != nil {
 		return nil, err
 	}
 	return
 }
 
-func (p *PassportService) ValidateToken(ctx context.Context, userId int64, token string) (err error) {
-	log.Debugf("uid=%d token=%s", userId, token)
+func (p *PassportService) ValidateToken(ctx context.Context, uid int64, token string) (err error) {
+	log.Debugf("uid=%d token=%s", uid, token)
 	var ut *model.UserToken
 
 	if ut, err = dao.GetUserTokenRepo().GetByAccessToken(token); err != nil {
 		return
 	}
-	if ut == nil || ut.UserId != userId {
+	if ut == nil || ut.Uid != uid {
 		return errors.ErrInvalidToken
 	}
 
 	return
 }
 
-func (p *PassportService) SetPwd(ctx context.Context, userId int64, passwd string, appId int) (token *passport.TokenInfo, err error) {
+func (p *PassportService) SetPwd(ctx context.Context, uid int64, passwd string, appid int) (token *passport.TokenInfo, err error) {
 	var (
 		user       *model.User
 		userToken  *model.UserToken
 		passwdHash []byte
 	)
-	if user, err = dao.GetUserRepo().Get(userId); err != nil {
+	if user, err = dao.GetUserRepo().Get(uid); err != nil {
 		return
 	}
 
@@ -120,7 +120,7 @@ func (p *PassportService) SetPwd(ctx context.Context, userId int64, passwd strin
 	}
 	user.Passwd = string(passwdHash)
 
-	if userToken, err = dao.GetUserTokenRepo().GetByUserIdAndAppId(userId, appId); err != nil {
+	if userToken, err = dao.GetUserTokenRepo().GetByUidAndAppId(uid, appid); err != nil {
 		return
 	}
 	userToken.AccessToken = uuid.New().String()
@@ -154,7 +154,7 @@ func (p *PassportService) SetPwd(ctx context.Context, userId int64, passwd strin
 	}
 
 	token = &passport.TokenInfo{
-		UserId:       userToken.UserId,
+		Uid:          userToken.Uid,
 		Token:        userToken.AccessToken,
 		RefreshToken: userToken.RefreshToken,
 		ExpiredAt:    time.Now().Unix() + 8640000,
@@ -163,11 +163,11 @@ func (p *PassportService) SetPwd(ctx context.Context, userId int64, passwd strin
 	return
 }
 
-func (p *PassportService) updateToken(ctx context.Context, userId int64, appId int) (token *passport.TokenInfo, err error) {
+func (p *PassportService) updateToken(ctx context.Context, uid int64, appid int) (token *passport.TokenInfo, err error) {
 	var (
 		userToken *model.UserToken
 	)
-	userToken, err = dao.GetUserTokenRepo().GetByUserIdAndAppId(userId, appId)
+	userToken, err = dao.GetUserTokenRepo().GetByUidAndAppId(uid, appid)
 	if err != nil {
 		return
 	}
@@ -181,7 +181,7 @@ func (p *PassportService) updateToken(ctx context.Context, userId int64, appId i
 	}
 
 	token = &passport.TokenInfo{
-		UserId:       userToken.UserId,
+		Uid:          userToken.Uid,
 		Token:        userToken.AccessToken,
 		RefreshToken: userToken.RefreshToken,
 		ExpiredAt:    time.Now().Unix() + 8640000,
@@ -225,7 +225,7 @@ func (p *PassportService) register(ctx context.Context, mobile string) (*passpor
 		ut := &model.UserToken{
 			Id:           rsp.Ids[1],
 			AppId:        1,
-			UserId:       u.Id,
+			Uid:          u.Id,
 			ExpiresIn:    8640000,
 			AccessToken:  u1,
 			RefreshToken: u2,
@@ -240,7 +240,7 @@ func (p *PassportService) register(ctx context.Context, mobile string) (*passpor
 		msg = &topic.UserCreated{
 			Id:    rsp.Ids[2],
 			Topic: constant.TOPIC_USER_CREATED,
-			Info:  &topic.UserInfo{UserId: u.Id, Mobile: mobile},
+			Info:  &topic.UserInfo{Uid: u.Id, Mobile: mobile},
 		}
 
 		if err = capx.TxStorePublished(session, rsp.Ids[2], constant.TOPIC_USER_CREATED, msg); err != nil {
@@ -248,7 +248,7 @@ func (p *PassportService) register(ctx context.Context, mobile string) (*passpor
 		}
 
 		tokenInfo = &passport.TokenInfo{
-			UserId:       u.Id,
+			Uid:          u.Id,
 			Token:        u1,
 			RefreshToken: u2,
 			ExpiredAt:    time.Now().Unix() + ut.ExpiresIn,

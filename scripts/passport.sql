@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `user_token` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `app_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `uid` bigint(20) unsigned NOT NULL DEFAULT '0',
   `expires_in` bigint(20) unsigned NOT NULL DEFAULT '0',
   `access_token` varchar(64) NOT NULL DEFAULT '',
   `refresh_token` varchar(64) NOT NULL DEFAULT '',

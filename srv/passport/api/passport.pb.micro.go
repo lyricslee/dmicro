@@ -38,8 +38,9 @@ type PassportService interface {
 	SmsLogin(ctx context.Context, in *SmsLoginRequest, opts ...client.CallOption) (*SmsLoginResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error)
 	OAuthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...client.CallOption) (*OAuthLoginResponse, error)
-	ValidateToken(ctx context.Context, in *TokenRequest, opts ...client.CallOption) (*TokenResponse, error)
 	SetPwd(ctx context.Context, in *SetPwdRequest, opts ...client.CallOption) (*SetPwdResponse, error)
+	AuthToken(ctx context.Context, in *AuthTokenRequest, opts ...client.CallOption) (*AuthTokenResponse, error)
+	AuthCookie(ctx context.Context, in *AuthCookieRequest, opts ...client.CallOption) (*AuthCookieResponse, error)
 }
 
 type passportService struct {
@@ -94,9 +95,9 @@ func (c *passportService) OAuthLogin(ctx context.Context, in *OAuthLoginRequest,
 	return out, nil
 }
 
-func (c *passportService) ValidateToken(ctx context.Context, in *TokenRequest, opts ...client.CallOption) (*TokenResponse, error) {
-	req := c.c.NewRequest(c.name, "Passport.ValidateToken", in)
-	out := new(TokenResponse)
+func (c *passportService) SetPwd(ctx context.Context, in *SetPwdRequest, opts ...client.CallOption) (*SetPwdResponse, error) {
+	req := c.c.NewRequest(c.name, "Passport.SetPwd", in)
+	out := new(SetPwdResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -104,9 +105,19 @@ func (c *passportService) ValidateToken(ctx context.Context, in *TokenRequest, o
 	return out, nil
 }
 
-func (c *passportService) SetPwd(ctx context.Context, in *SetPwdRequest, opts ...client.CallOption) (*SetPwdResponse, error) {
-	req := c.c.NewRequest(c.name, "Passport.SetPwd", in)
-	out := new(SetPwdResponse)
+func (c *passportService) AuthToken(ctx context.Context, in *AuthTokenRequest, opts ...client.CallOption) (*AuthTokenResponse, error) {
+	req := c.c.NewRequest(c.name, "Passport.AuthToken", in)
+	out := new(AuthTokenResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *passportService) AuthCookie(ctx context.Context, in *AuthCookieRequest, opts ...client.CallOption) (*AuthCookieResponse, error) {
+	req := c.c.NewRequest(c.name, "Passport.AuthCookie", in)
+	out := new(AuthCookieResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -121,8 +132,9 @@ type PassportHandler interface {
 	SmsLogin(context.Context, *SmsLoginRequest, *SmsLoginResponse) error
 	Login(context.Context, *LoginRequest, *LoginResponse) error
 	OAuthLogin(context.Context, *OAuthLoginRequest, *OAuthLoginResponse) error
-	ValidateToken(context.Context, *TokenRequest, *TokenResponse) error
 	SetPwd(context.Context, *SetPwdRequest, *SetPwdResponse) error
+	AuthToken(context.Context, *AuthTokenRequest, *AuthTokenResponse) error
+	AuthCookie(context.Context, *AuthCookieRequest, *AuthCookieResponse) error
 }
 
 func RegisterPassportHandler(s server.Server, hdlr PassportHandler, opts ...server.HandlerOption) error {
@@ -131,8 +143,9 @@ func RegisterPassportHandler(s server.Server, hdlr PassportHandler, opts ...serv
 		SmsLogin(ctx context.Context, in *SmsLoginRequest, out *SmsLoginResponse) error
 		Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error
 		OAuthLogin(ctx context.Context, in *OAuthLoginRequest, out *OAuthLoginResponse) error
-		ValidateToken(ctx context.Context, in *TokenRequest, out *TokenResponse) error
 		SetPwd(ctx context.Context, in *SetPwdRequest, out *SetPwdResponse) error
+		AuthToken(ctx context.Context, in *AuthTokenRequest, out *AuthTokenResponse) error
+		AuthCookie(ctx context.Context, in *AuthCookieRequest, out *AuthCookieResponse) error
 	}
 	type Passport struct {
 		passport
@@ -161,10 +174,14 @@ func (h *passportHandler) OAuthLogin(ctx context.Context, in *OAuthLoginRequest,
 	return h.PassportHandler.OAuthLogin(ctx, in, out)
 }
 
-func (h *passportHandler) ValidateToken(ctx context.Context, in *TokenRequest, out *TokenResponse) error {
-	return h.PassportHandler.ValidateToken(ctx, in, out)
-}
-
 func (h *passportHandler) SetPwd(ctx context.Context, in *SetPwdRequest, out *SetPwdResponse) error {
 	return h.PassportHandler.SetPwd(ctx, in, out)
+}
+
+func (h *passportHandler) AuthToken(ctx context.Context, in *AuthTokenRequest, out *AuthTokenResponse) error {
+	return h.PassportHandler.AuthToken(ctx, in, out)
+}
+
+func (h *passportHandler) AuthCookie(ctx context.Context, in *AuthCookieRequest, out *AuthCookieResponse) error {
+	return h.PassportHandler.AuthCookie(ctx, in, out)
 }

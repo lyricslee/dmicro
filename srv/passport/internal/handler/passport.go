@@ -65,16 +65,6 @@ func (h *PassportHandler) OAuthLogin(ctx context.Context, req *passport.OAuthLog
 	return nil
 }
 
-func (h *PassportHandler) ValidateToken(ctx context.Context, req *passport.TokenRequest, rsp *passport.TokenResponse) error {
-	log.Debug("ValidateToken...")
-	header, err := util.GetHeaderFromContext(ctx)
-	if err != nil {
-		return err
-	}
-	log.Debugf("ValidateToken: uid=%d token=%s", header.Uid, header.Token)
-	return h.svc.ValidateToken(ctx, header.Uid, header.Token)
-}
-
 func (h *PassportHandler) SetPwd(ctx context.Context, req *passport.SetPwdRequest, rsp *passport.SetPwdResponse) error {
 	log.Debug("SetPwd...")
 	header, err := util.GetHeaderFromContext(ctx)
@@ -85,5 +75,20 @@ func (h *PassportHandler) SetPwd(ctx context.Context, req *passport.SetPwdReques
 	if rsp.TokenInfo, err = h.svc.SetPwd(ctx, header.Uid, req.Passwd, header.AppId); err != nil {
 		return err
 	}
+	return nil
+}
+
+func (h *PassportHandler) AuthToken(ctx context.Context, req *passport.AuthTokenRequest, rsp *passport.AuthTokenResponse) error {
+	log.Debug("AuthToken...")
+	header, err := util.GetHeaderFromContext(ctx)
+	if err != nil {
+		return err
+	}
+	log.Debugf("AuthToken: uid=%d token=%s", header.Uid, header.Token)
+	return h.svc.ValidateToken(ctx, header.Uid, header.Token)
+}
+
+func (h *PassportHandler) AuthCookie(ctx context.Context, req *passport.AuthCookieRequest, rsp *passport.AuthCookieResponse) error {
+	// TODO
 	return nil
 }

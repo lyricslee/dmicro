@@ -26,11 +26,11 @@ func GetUserHandler() *UserHandler {
 }
 
 func (h *UserHandler) Create(ctx context.Context, req *user.Request, rsp *user.Response) (err error) {
-	if err = h.svc.Create(req.UserId, req.Mobile); err != nil {
+	if err = h.svc.Create(req.Uid, req.Mobile); err != nil {
 		fmt.Println("xxxxxxxxxxxx")
 		return
 	}
-	fmt.Println(req.UserId, req.Mobile)
+	fmt.Println(req.Uid, req.Mobile)
 	rsp = &user.Response{}
 	return
 }

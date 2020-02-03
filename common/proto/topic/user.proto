@@ -3,8 +3,8 @@ syntax = "proto3";
 package dmicro.topic;
 
 message UserInfo {
-    int64 user_id = 1;
-    string mobile =2;
+    int64 uid = 1;
+    string mobile = 2;
 }
 
 message UserCreated {

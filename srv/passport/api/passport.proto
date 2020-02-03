@@ -7,12 +7,13 @@ service Passport {
 	rpc SmsLogin(SmsLoginRequest) returns (SmsLoginResponse) {}
 	rpc Login(LoginRequest) returns (LoginResponse) {}
 	rpc OAuthLogin(OAuthLoginRequest) returns (OAuthLoginResponse) {}
-	rpc ValidateToken(TokenRequest) returns (TokenResponse) {}
 	rpc SetPwd(SetPwdRequest) returns (SetPwdResponse) {}
+	rpc AuthToken(AuthTokenRequest) returns (AuthTokenResponse) {}
+	rpc AuthCookie(AuthCookieRequest) returns (AuthCookieResponse) {}
 }
 
 message TokenInfo {
-	int64 user_id = 1;
+	int64 uid = 1;
 	string token = 2;
 	string refresh_token = 3;
 	int64 expired_at = 4;
@@ -53,16 +54,23 @@ message OAuthLoginResponse {
 	TokenInfo token_info = 1;
 }
 
-message TokenRequest {
-}
-
-message TokenResponse {
-}
-
 message SetPwdRequest{
 	string passwd = 1;
 }
 
 message SetPwdResponse{
 	TokenInfo token_info = 1;
+}
+
+message AuthTokenRequest {
+}
+
+message AuthTokenResponse {
+}
+
+message AuthCookieRequest {
+    string Cookie = 1;
+}
+
+message AuthCookieResponse {
 }

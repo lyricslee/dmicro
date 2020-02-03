@@ -85,12 +85,4 @@ func main() {
 	if err := svc.Run(); err != nil {
 		log.Fatal(err)
 	}
-
-	//if err := b.Init(); err != nil {
-	//	log.Fatalf("Broker init error: %v", err)
-	//}
-	//
-	//if err := b.Connect(); err != nil {
-	//	log.Fatalf("Broker connect error: %v", err)
-	//}
 }

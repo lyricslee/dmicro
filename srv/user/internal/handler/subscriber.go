@@ -53,7 +53,7 @@ func (sub *Subscriber) UserCreated() func(ctx context.Context, msg *topic.UserCr
 			session.Close()
 		}()
 		err = tx.ExecWithTransaction(session, func(session *xorm.Session) (err error) {
-			if _, err = session.InsertOne(&model.User{Id: msg.Info.UserId, Mobile: msg.Info.Mobile}); err != nil {
+			if _, err = session.InsertOne(&model.User{Id: msg.Info.Uid, Mobile: msg.Info.Mobile}); err != nil {
 				return
 			}
 
@@ -72,6 +72,6 @@ func (sub *Subscriber) CapxUserCreated() capx.ConsumerFn {
 	return func(pb proto.Message) (err error) {
 		log.Debug("CapxUserCreated")
 		msg := pb.(*topic.UserCreated)
-		return sub.svc.Create(msg.Info.UserId, msg.Info.Mobile)
+		return sub.svc.Create(msg.Info.Uid, msg.Info.Mobile)
 	}
 }

@@ -28,11 +28,11 @@ func (r *UserTokenRepo) Add(v *model.UserToken) (err error) {
 	return
 }
 
-func (r *UserTokenRepo) GetByUserIdAndAppId(userId int64, appId int) (v *model.UserToken, err error) {
+func (r *UserTokenRepo) GetByUidAndAppId(uid int64, appid int) (v *model.UserToken, err error) {
 	var (
 		has bool
 	)
-	v = &model.UserToken{UserId: userId, AppId: appId}
+	v = &model.UserToken{Uid: uid, AppId: appid}
 	if has, err = GetEngine().Get(v); err != nil {
 		return nil, err
 	} else if !has {
