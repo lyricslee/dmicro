@@ -47,8 +47,9 @@ func GetHeaderFromContext(ctx context.Context) (*typ.Header, error) {
 
 	header := typ.Header{}
 	header.Token = md["Token"]
+	header.Appid, _ = strconv.Atoi(md["App-Id"])
 	header.Uid, _ = strconv.ParseInt(md["Uid"], 10, 64)
-	header.AppId, _ = strconv.Atoi(md["App-Id"])
+	header.Plat, _ = strconv.Atoi(md["Plat"])
 	//header.AppVersion = md["App-Version"]
 	//header.OsType = md["Os-Type"]
 	//header.OsVersion = md["Os-Version"]

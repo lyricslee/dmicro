@@ -14,6 +14,8 @@ var (
 	Tracer *config.Tracer
 
 	StanBroker *stanBroker
+
+	Redis *config.Redis
 )
 
 type stanBroker struct {
@@ -42,4 +44,9 @@ func Init() {
 
 	Tracer = &config.Tracer{}
 	Tracer.Addr = viper.GetString("tracer.addr")
+
+	Redis = &config.Redis{}
+	Redis.Addr = viper.GetString("redis.addr")
+	Redis.Password = viper.GetString("redis.password")
+	Redis.DB = viper.GetInt("redis.db")
 }

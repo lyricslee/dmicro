@@ -47,6 +47,12 @@ docker run -d --name etcd \
 ```
 import sql scripts
 ```
+
+### redis
+```
+docker run -d --name redis -p 6379:6379 redis
+```
+
 ### gate micro web
 ```
 cd gate/micro
@@ -84,6 +90,7 @@ curl -X POST \
   'http://localhost:8082/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
   -H 'App-Id: 1' \
+  -H 'Plat: 1' \
   -d '{
     "mobile": "13705918888",
     "code": "123456"
@@ -110,6 +117,7 @@ curl -X POST \
   'http://localhost:8080/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
   -H 'App-Id: 1' \
+  -H 'Plat: 1' \
   -d '{
     "mobile": "13705918888",
     "code": "123456"
@@ -119,11 +127,6 @@ curl -X POST \
 ## UMS统一消息系统
 ### 架构
 <img src="https://github.com/fztcjjl/dmicro/raw/master/docs/ums.png">
-
-### redis
-```
-docker run -d --name redis -p 6379:6379 redis
-```
 
 ### 运行micro
 ```

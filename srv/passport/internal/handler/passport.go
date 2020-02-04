@@ -5,8 +5,6 @@ import (
 	"sync"
 
 	"dmicro/common/log"
-	"dmicro/common/typ"
-	"dmicro/common/util"
 	passport "dmicro/srv/passport/api"
 	"dmicro/srv/passport/internal/service"
 )
@@ -36,28 +34,14 @@ func (h *PassportHandler) Sms(ctx context.Context, req *passport.Request, rsp *p
 
 func (h *PassportHandler) SmsLogin(ctx context.Context, req *passport.SmsLoginRequest, rsp *passport.SmsLoginResponse) (err error) {
 	log.Debugf("SmsLogin: mobile=%s code=%s", req.Mobile, req.Code)
-	var (
-		header *typ.Header
-	)
-	if header, err = util.GetHeaderFromContext(ctx); err != nil {
-		return
-	}
-	rsp.TokenInfo, err = h.svc.SmsLogin(ctx, req.Mobile, req.Code, header.AppId)
+	rsp.TokenInfo, err = h.svc.SmsLogin(ctx, req.Mobile, req.Code)
 	return
 }
 
 func (h *PassportHandler) Login(ctx context.Context, req *passport.LoginRequest, rsp *passport.LoginResponse) (err error) {
 	log.Debugf("Login: mobile=%s passwd=%s", req.Mobile, req.Passwd)
-	var (
-		header *typ.Header
-	)
-	header, err = util.GetHeaderFromContext(ctx)
-	if err != nil {
-		return err
-	}
-	if rsp.TokenInfo, err = h.svc.Login(ctx, req.Mobile, req.Passwd, header.AppId); err != nil {
-		return err
-	}
+	rsp.TokenInfo, err = h.svc.Login(ctx, req.Mobile, req.Passwd)
+
 	return
 }
 
@@ -65,27 +49,14 @@ func (h *PassportHandler) OAuthLogin(ctx context.Context, req *passport.OAuthLog
 	return nil
 }
 
-func (h *PassportHandler) SetPwd(ctx context.Context, req *passport.SetPwdRequest, rsp *passport.SetPwdResponse) error {
+func (h *PassportHandler) SetPwd(ctx context.Context, req *passport.SetPwdRequest, rsp *passport.SetPwdResponse) (err error) {
 	log.Debug("SetPwd...")
-	header, err := util.GetHeaderFromContext(ctx)
-	if err != nil {
-		return err
-	}
-
-	if rsp.TokenInfo, err = h.svc.SetPwd(ctx, header.Uid, req.Passwd, header.AppId); err != nil {
-		return err
-	}
+	rsp.TokenInfo, err = h.svc.SetPwd(ctx, req.Passwd)
 	return nil
 }
 
 func (h *PassportHandler) AuthToken(ctx context.Context, req *passport.AuthTokenRequest, rsp *passport.AuthTokenResponse) error {
-	log.Debug("AuthToken...")
-	header, err := util.GetHeaderFromContext(ctx)
-	if err != nil {
-		return err
-	}
-	log.Debugf("AuthToken: uid=%d token=%s", header.Uid, header.Token)
-	return h.svc.ValidateToken(ctx, header.Uid, header.Token)
+	return h.svc.AuthToken(ctx)
 }
 
 func (h *PassportHandler) AuthCookie(ctx context.Context, req *passport.AuthCookieRequest, rsp *passport.AuthCookieResponse) error {

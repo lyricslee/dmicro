@@ -61,7 +61,6 @@ func (b *breaker) Handler() plugin.Handler {
 				return nil
 			}, func(err error) error {
 				log.Error(err)
-				util.WriteError(w, err)
 				return err
 			})
 			if err != nil {

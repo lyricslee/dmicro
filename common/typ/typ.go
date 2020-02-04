@@ -2,8 +2,9 @@ package typ
 
 type Header struct {
 	Token string // 登录令牌
+	Appid int    // appid
 	Uid   int64  // 用户id
-	AppId int    // appid
+	Plat  int    // 平台类型
 	//AppVersion string // 客户端版本
 	//OsType     string // 操作系统类型
 	//OsVersion  string // 操作系统版本
