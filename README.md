@@ -3,7 +3,8 @@
 ## 目录
 - [快速开始](#快速开始)
 - [UMS统一消息系统](#UMS统一消息系统)
-- [drone CI CD环境搭建指南](#drone CI CD环境搭建指南)
+- [分布式事务处理](#分布式事务处理)
+- [drone CI CD环境搭建指南](#DRONE CI CD环境搭建指南)
   - [vagrant环境搭建](docs/drone/vagrant.md)
   - [gitea安装配置](docs/drone/gitea.md)
   - [私有仓库harbor安装配置](docs/drone/harbor.md)
@@ -162,7 +163,13 @@ cd examples/chat
 用浏览器打开chat.html文件
 ```
 
-## drone CI CD环境搭建指南
+## 分布式事务处理
+
+本方案基于本地消息表实现，示意图如下
+
+<img src="https://github.com/fztcjjl/dmicro/raw/master/docs/capx.png">
+
+## DRONE CI CD环境搭建指南
 - [vagrant环境搭建](docs/drone/vagrant.md)
 - [gitea安装配置](docs/drone/gitea.md)
 - [私有仓库harbor安装配置](docs/drone/harbor.md)
