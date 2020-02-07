@@ -1,6 +1,9 @@
 package config
 
 import (
+	"crypto/rsa"
+
+	"github.com/dgrijalva/jwt-go/test"
 	"github.com/spf13/viper"
 
 	"dmicro/common/config"
@@ -16,6 +19,9 @@ var (
 	StanBroker *stanBroker
 
 	Redis *config.Redis
+
+	AuthPrivateKey *rsa.PrivateKey
+	AuthPublicKey  *rsa.PublicKey
 )
 
 type stanBroker struct {
@@ -49,4 +55,7 @@ func Init() {
 	Redis.Addr = viper.GetString("redis.addr")
 	Redis.Password = viper.GetString("redis.password")
 	Redis.DB = viper.GetInt("redis.db")
+
+	AuthPrivateKey = test.LoadRSAPrivateKeyFromDisk("./conf/auth_key")
+	AuthPublicKey = test.LoadRSAPublicKeyFromDisk("./conf/auth_key.pub")
 }

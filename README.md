@@ -90,9 +90,9 @@ go build
 curl -X POST \
   'http://localhost:8082/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
-  -H 'App-Id: 1' \
-  -H 'Plat: 1' \
   -d '{
+    "appid": 1,
+    "plat": 1,
     "mobile": "13705918888",
     "code": "123456"
 }'
@@ -117,9 +117,9 @@ go build
 curl -X POST \
   'http://localhost:8080/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
-  -H 'App-Id: 1' \
-  -H 'Plat: 1' \
   -d '{
+    "appid": 1,
+    "plat": 1,
     "mobile": "13705918888",
     "code": "123456"
 }'

@@ -1,7 +1,7 @@
 package constant
 
 const (
-	REDIS_KEY_CONNID        = "ums:connid:appid:%d:uid:%d:plat:%d"
-	REDIS_KEY_TOKEN         = "passport:token:appid:%d:uid:%d:plat:%d"
-	REDIS_KEY_REFRESH_TOKEN = "passport:refresh_token:appid:%d:uid:%d:plat:%d"
+	RedisKeyConnid       = "UMS:CONNID:%d:%d:%d"             // "UMS:CONNID:appid:uid:plat"
+	RedisKeyToken        = "PASSPORT:TOKEN:%d:%d:%d"         // "PASSPORT:TOKEN:appid:uid:plat"
+	RedisKeyRefreshToken = "PASSPORT:REFRESH_TOKEN:%d:%d:%d" // "PASSPORT:REFRESH_TOKEN:appid:uid:plat"
 )

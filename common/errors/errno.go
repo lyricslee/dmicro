@@ -9,4 +9,5 @@ var (
 	ErrInvalidToken  = NewError(1002, "无效的令牌")
 	ErrUserNotExists = NewError(1003, "用户不存在")
 	ErrPasswordError = NewError(1004, "密码错误")
+	ErrTokenExpired  = NewError(1005, "令牌已过期")
 )

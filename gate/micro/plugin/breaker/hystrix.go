@@ -53,14 +53,14 @@ func (b *breaker) Handler() plugin.Handler {
 
 				h.ServeHTTP(sct.WrappedResponseWriter(), r)
 
-				if sct.Status >= http.StatusBadRequest {
+				if sct.Status >= http.StatusBadRequest && sct.Status != 499 {
 					errmsg := fmt.Sprintf("%d %s", sct.Status, http.StatusText(sct.Status))
 					return errors.New(errmsg)
 				}
 
 				return nil
 			}, func(err error) error {
-				log.Error(err)
+				//log.Error(err)
 				return err
 			})
 			if err != nil {

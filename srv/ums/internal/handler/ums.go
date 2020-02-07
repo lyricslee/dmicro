@@ -71,7 +71,7 @@ func (this *UmsHandler) handleRsp(ctx context.Context, req *ums.A2LRequest, rsp 
 		topic string
 	)
 	rc := dao.GetClient()
-	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, req.Appid, req.Uid, req.Platform)
+	key := fmt.Sprintf(constant.RedisKeyConnid, req.Appid, req.Uid, req.Platform)
 	result, _ := rc.Get(key).Result()
 	gateid, _ := convert.ConvertInt(result)
 	topic = fmt.Sprintf(constant.TOPIC_L2G_PREFIX, gateid)

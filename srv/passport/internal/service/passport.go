@@ -4,14 +4,13 @@ import (
 	"context"
 	"dmicro/common/typ"
 	"dmicro/common/util"
-	"encoding/json"
 	"fmt"
-	"github.com/go-redis/redis"
 	"sync"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/go-xorm/xorm"
-	"github.com/google/uuid"
+	"github.com/micro/go-micro/v2/metadata"
 	"golang.org/x/crypto/bcrypt"
 
 	"dmicro/common/capx"
@@ -19,13 +18,20 @@ import (
 	"dmicro/common/errors"
 	"dmicro/common/log"
 	topic "dmicro/common/proto/topic"
+	"dmicro/common/util/jwt"
 	"dmicro/pkg/tx"
 	gid "dmicro/srv/gid/api"
 	passport "dmicro/srv/passport/api"
 	"dmicro/srv/passport/internal/client"
+	"dmicro/srv/passport/internal/config"
 	"dmicro/srv/passport/internal/dao"
 	"dmicro/srv/passport/internal/model"
 	user "dmicro/srv/user/api"
+)
+
+const (
+	TokenExpiresIn        = 2 * 3600
+	RefreshTokenExpiresIn = 30 * 24 * 3600
 )
 
 type PassportService struct {
@@ -50,12 +56,13 @@ func GetPassportService() *PassportService {
 	return passportService
 }
 
-func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string) (token *passport.TokenInfo, err error) {
+func (p *PassportService) SmsLogin(ctx context.Context, appid, plat int, mobile, code string) (token *passport.TokenInfo, err error) {
 	var (
-		header *typ.Header
-		user   *model.User
+		user *model.User
 	)
-	if header, err = util.GetHeaderFromContext(ctx); err != nil {
+	if appid == 0 || plat == 0 {
+		err = fmt.Errorf("appid or plat can't be zero")
+		log.Error(err)
 		return
 	}
 	// TODO: 校验验证码
@@ -65,9 +72,10 @@ func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string) (to
 	}
 
 	if user == nil {
-		token, err = p.register(ctx, header.Appid, header.Plat, mobile)
+		token, err = p.register(ctx, appid, plat, mobile)
 	} else {
-		if token, err = p.updateToken(header.Appid, user.Id, header.Plat); err != nil {
+		// TODO：踢掉其它登录的设备
+		if token, err = p.updateToken(appid, user.Id, plat); err != nil {
 			return nil, err
 		}
 	}
@@ -75,14 +83,16 @@ func (p *PassportService) SmsLogin(ctx context.Context, mobile, code string) (to
 	return
 }
 
-func (p *PassportService) Login(ctx context.Context, mobile, passwd string) (token *passport.TokenInfo, err error) {
+func (p *PassportService) Login(ctx context.Context, appid, plat int, mobile, passwd string) (token *passport.TokenInfo, err error) {
 	var (
-		header *typ.Header
-		user   *model.User
+		user *model.User
 	)
-	if header, err = util.GetHeaderFromContext(ctx); err != nil {
+	if appid == 0 || plat == 0 {
+		err = fmt.Errorf("appid or plat can't be zero")
+		log.Error(err)
 		return
 	}
+
 	if user, err = dao.GetUserRepo().GetByMobile(mobile); err != nil {
 		log.Error(err)
 		return nil, err
@@ -93,55 +103,74 @@ func (p *PassportService) Login(ctx context.Context, mobile, passwd string) (tok
 	if err = bcrypt.CompareHashAndPassword([]byte(user.Passwd), []byte(passwd)); err != nil {
 		return nil, errors.ErrPasswordError
 	}
-	if token, err = p.updateToken(header.Appid, user.Id, header.Plat); err != nil {
+	// TODO：踢掉其它登录的设备
+	if token, err = p.updateToken(appid, user.Id, plat); err != nil {
 		return nil, err
 	}
 	return
 }
 
-func (p *PassportService) AuthToken(ctx context.Context) (err error) {
+func (p *PassportService) AuthToken(ctx context.Context) (rsp *passport.AuthTokenResponse, err error) {
 	var (
-		header *typ.Header
-		token  string
+		token string
 	)
-	if header, err = util.GetHeaderFromContext(ctx); err != nil {
+
+	md, ok := metadata.FromContext(ctx)
+	if !ok {
+		log.Error("metadata.FromContext error")
+		err = fmt.Errorf("SmsLogin: metadata.FromContext error")
+		return
+	}
+
+	userInfo, err := jwt.Decode(config.AuthPublicKey, md["Token"])
+	if err != nil {
 		log.Error(err)
 		return
 	}
 
-	log.Debugf("appid=%d uid=%d plat=%d token=%s", header.Appid, header.Uid, header.Plat, header.Token)
-	tokenKey := fmt.Sprintf(constant.REDIS_KEY_TOKEN, header.Appid, header.Uid, header.Plat)
+	tokenKey := fmt.Sprintf(constant.RedisKeyToken, userInfo.Appid, userInfo.Uid, userInfo.Plat)
 	log.Debug(tokenKey)
+
 	client := dao.GetRedisClient()
 	if token, err = client.Get(tokenKey).Result(); err != nil {
 		log.Error(err)
 		return
 	}
-	t := &passport.TokenInfo{}
-	if err = json.Unmarshal([]byte(token), t); err != nil {
-		log.Error(err)
-		return err
-	}
-	if t.Uid != header.Uid || t.Token != header.Token {
+
+	if token != md["Token"] {
 		err = errors.ErrInvalidToken
+		log.Debug(err)
 		return
 	}
 
+	log.Debugf("appid=%d uid=%d plat=%d", userInfo.Appid, userInfo.Uid, userInfo.Plat)
+	rsp = &passport.AuthTokenResponse{
+		Appid: int32(userInfo.Appid),
+		Uid:   userInfo.Uid,
+		Plat:  int32(userInfo.Plat),
+	}
 	return
 }
 
 func (p *PassportService) SetPwd(ctx context.Context, passwd string) (tokenInfo *passport.TokenInfo, err error) {
 	var (
-		header     *typ.Header
+		md         *typ.MetaData
 		user       *model.User
 		passwdHash []byte
 	)
-	header, err = util.GetHeaderFromContext(ctx)
+
+	md, err = util.GetMetaDataFromContext(ctx)
 	if err != nil {
 		return
 	}
 
-	if user, err = dao.GetUserRepo().Get(header.Uid); err != nil {
+	if md.Appid == 0 || md.Uid == 0 || md.Plat == 0 {
+		err = fmt.Errorf("appid or uid or plat can't be zero.")
+		log.Error(err)
+		return
+	}
+
+	if user, err = dao.GetUserRepo().Get(md.Uid); err != nil {
 		log.Error(err)
 		return
 	}
@@ -172,7 +201,8 @@ func (p *PassportService) SetPwd(ctx context.Context, passwd string) (tokenInfo 
 		return
 	}
 
-	tokenInfo, err = p.updateToken(header.Appid, header.Uid, header.Plat)
+	log.Debugf("appid=%d uid=%d plat=%d", md.Appid, md.Uid, md.Plat)
+	tokenInfo, err = p.updateToken(md.Appid, md.Uid, md.Plat)
 
 	if err = session.Commit(); err != nil {
 		log.Error(err)
@@ -188,10 +218,10 @@ func (p *PassportService) setToken(tokenKey, token, refreshTokenKey, refreshToke
 		if err := pipe.MSet(tokenKey, token, refreshTokenKey, refreshToken).Err(); err != nil {
 			return err
 		}
-		if err := pipe.Expire(tokenKey, time.Duration(2*3600)*time.Second).Err(); err != nil {
+		if err := pipe.Expire(tokenKey, time.Duration(TokenExpiresIn)*time.Second).Err(); err != nil {
 			return err
 		}
-		if err := pipe.Expire(refreshTokenKey, time.Duration(30*24)*time.Hour).Err(); err != nil {
+		if err := pipe.Expire(refreshTokenKey, time.Duration(RefreshTokenExpiresIn)*time.Second).Err(); err != nil {
 			return err
 		}
 		return nil
@@ -200,37 +230,49 @@ func (p *PassportService) setToken(tokenKey, token, refreshTokenKey, refreshToke
 }
 
 func (p *PassportService) updateToken(appid int, uid int64, plat int) (tokenInfo *passport.TokenInfo, err error) {
-	token := uuid.New().String()
-	refreshToken := uuid.New().String()
+	var (
+		token        string
+		refreshToken string
+	)
+	token, err = jwt.Encode(
+		config.AuthPrivateKey,
+		&jwt.UserInfo{Appid: appid, Uid: uid, Plat: plat},
+		TokenExpiresIn,
+	)
+	if err != nil {
+		return
+	}
+
+	refreshToken, err = jwt.Encode(
+		config.AuthPrivateKey,
+		&jwt.UserInfo{Appid: appid, Uid: uid, Plat: plat},
+		RefreshTokenExpiresIn,
+	)
+	if err != nil {
+		return
+	}
 
 	tokenInfo = &passport.TokenInfo{
-		Uid:          uid,
 		Token:        token,
 		RefreshToken: refreshToken,
-		ExpiredAt:    time.Now().Unix() + 2*3600,
+		ExpiresAt:    time.Now().Unix() + TokenExpiresIn,
 	}
 
-	if b, err := json.Marshal(tokenInfo); err != nil {
-		return nil, err
-	} else {
-		tokenKey := fmt.Sprintf(constant.REDIS_KEY_TOKEN, appid, uid, plat)
-		refreshTokenKey := fmt.Sprintf(constant.REDIS_KEY_REFRESH_TOKEN, appid, uid, plat)
-		token = string(b)
-		err = p.setToken(tokenKey, token, refreshTokenKey, refreshToken)
-
-	}
+	tokenKey := fmt.Sprintf(constant.RedisKeyToken, appid, uid, plat)
+	refreshTokenKey := fmt.Sprintf(constant.RedisKeyRefreshToken, appid, uid, plat)
+	err = p.setToken(tokenKey, token, refreshTokenKey, refreshToken)
 
 	return
 }
 
 func (p *PassportService) register(ctx context.Context, appid int, plat int, mobile string) (*passport.TokenInfo, error) {
-	rsp, err := p.gidClient.GetMulti(ctx, &gid.MultiRequest{Count: 3})
+	rsp, err := p.gidClient.GetMulti(ctx, &gid.MultiRequest{Count: 2})
 	if err != nil {
 		return nil, err
 	}
 
-	if len(rsp.Ids) != 3 {
-		return nil, fmt.Errorf("the number of ids dose not match expected %v got %v", 3, len(rsp.Ids))
+	if len(rsp.Ids) != 2 {
+		return nil, fmt.Errorf("the number of ids dose not match expected %v got %v", 2, len(rsp.Ids))
 	}
 
 	session := p.engine.NewSession()
@@ -253,39 +295,44 @@ func (p *PassportService) register(ctx context.Context, appid int, plat int, mob
 			return err
 		}
 
-		token := uuid.New().String()
-		refreshToken := uuid.New().String()
-
-		tokenInfo = &passport.TokenInfo{
-			Uid:          u.Id,
-			Token:        token,
-			RefreshToken: refreshToken,
-			ExpiredAt:    time.Now().Unix() + 2*3600,
+		token, err := jwt.Encode(
+			config.AuthPrivateKey,
+			&jwt.UserInfo{Appid: appid, Uid: rsp.Ids[0], Plat: plat},
+			TokenExpiresIn,
+		)
+		if err != nil {
+			return err
 		}
 
-		if b, err := json.Marshal(tokenInfo); err != nil {
+		refreshToken, err := jwt.Encode(
+			config.AuthPrivateKey,
+			&jwt.UserInfo{Appid: appid, Uid: rsp.Ids[0], Plat: plat},
+			RefreshTokenExpiresIn,
+		)
+		if err != nil {
 			return err
-		} else {
-			tokenKey := fmt.Sprintf(constant.REDIS_KEY_TOKEN, appid, rsp.Ids[0], plat)
-			refreshTokenKey := fmt.Sprintf(constant.REDIS_KEY_REFRESH_TOKEN, appid, rsp.Ids[0], plat)
-			token = string(b)
+		}
+		tokenKey := fmt.Sprintf(constant.RedisKeyToken, appid, rsp.Ids[0], plat)
+		refreshTokenKey := fmt.Sprintf(constant.RedisKeyRefreshToken, appid, rsp.Ids[0], plat)
+		if err := p.setToken(tokenKey, token, refreshTokenKey, refreshToken); err != nil {
+			return err
+		}
 
-			if err := p.setToken(tokenKey, token, refreshTokenKey, refreshToken); err != nil {
-				return err
-			}
+		tokenInfo = &passport.TokenInfo{
+			Token:        token,
+			RefreshToken: refreshToken,
+			ExpiresAt:    time.Now().Unix() + TokenExpiresIn,
 		}
 
 		// 分布式事务处理
 		// 发布topic.user.created事件
 		msg = &topic.UserCreated{
-			Id:    rsp.Ids[2],
+			Id:    rsp.Ids[1],
 			Topic: constant.TOPIC_USER_CREATED,
 			Info:  &topic.UserInfo{Uid: u.Id, Mobile: mobile},
 		}
 
-		if err = capx.TxStorePublished(session, rsp.Ids[2], constant.TOPIC_USER_CREATED, msg); err != nil {
-			tokenKey := fmt.Sprintf(constant.REDIS_KEY_TOKEN, appid, rsp.Ids[0], plat)
-			refreshTokenKey := fmt.Sprintf(constant.REDIS_KEY_REFRESH_TOKEN, appid, rsp.Ids[0], plat)
+		if err = capx.TxStorePublished(session, rsp.Ids[1], constant.TOPIC_USER_CREATED, msg); err != nil {
 			client := dao.GetRedisClient()
 			client.Del(tokenKey, refreshTokenKey)
 			log.Error(err)
@@ -298,7 +345,7 @@ func (p *PassportService) register(ctx context.Context, appid int, plat int, mob
 	}
 
 	// 发布消息，发布消息出错不需要处理
-	_ = capx.Publish(rsp.Ids[2], constant.TOPIC_USER_CREATED, msg)
+	_ = capx.Publish(rsp.Ids[1], constant.TOPIC_USER_CREATED, msg)
 
 	return tokenInfo, nil
 }

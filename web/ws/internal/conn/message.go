@@ -34,7 +34,7 @@ type Message struct {
 	Type     int32           `json:"type"`               // type消息类型 1: PING, 2: PONG, 3: REQ, 4: RSP, 5: PUSH, 6: IM
 	Cmd      int32           `json:"cmd,omitempty"`      // 命令类型
 	Seq      int32           `json:"seq,omitempty"`      // 序号
-	Payload  json.RawMessage `json:"payload,omitempty"`  // body数据字段
+	Payload  json.RawMessage `json:"payload,omitempty"`  // 数据字段
 }
 
 func DecodeJSON(buf []byte) (msg *Message, err error) {

@@ -34,13 +34,13 @@ func (h *PassportHandler) Sms(ctx context.Context, req *passport.Request, rsp *p
 
 func (h *PassportHandler) SmsLogin(ctx context.Context, req *passport.SmsLoginRequest, rsp *passport.SmsLoginResponse) (err error) {
 	log.Debugf("SmsLogin: mobile=%s code=%s", req.Mobile, req.Code)
-	rsp.TokenInfo, err = h.svc.SmsLogin(ctx, req.Mobile, req.Code)
+	rsp.TokenInfo, err = h.svc.SmsLogin(ctx, int(req.Appid), int(req.Plat), req.Mobile, req.Code)
 	return
 }
 
 func (h *PassportHandler) Login(ctx context.Context, req *passport.LoginRequest, rsp *passport.LoginResponse) (err error) {
 	log.Debugf("Login: mobile=%s passwd=%s", req.Mobile, req.Passwd)
-	rsp.TokenInfo, err = h.svc.Login(ctx, req.Mobile, req.Passwd)
+	rsp.TokenInfo, err = h.svc.Login(ctx, int(req.Appid), int(req.Plat), req.Mobile, req.Passwd)
 
 	return
 }
@@ -56,10 +56,17 @@ func (h *PassportHandler) SetPwd(ctx context.Context, req *passport.SetPwdReques
 }
 
 func (h *PassportHandler) AuthToken(ctx context.Context, req *passport.AuthTokenRequest, rsp *passport.AuthTokenResponse) error {
-	return h.svc.AuthToken(ctx)
+	log.Debug("AuthToken...")
+	r, err := h.svc.AuthToken(ctx)
+	if r != nil {
+		rsp.Appid = r.Appid
+		rsp.Uid = r.Uid
+		rsp.Plat = r.Plat
+	}
+	return err
 }
 
-func (h *PassportHandler) AuthCookie(ctx context.Context, req *passport.AuthCookieRequest, rsp *passport.AuthCookieResponse) error {
+func (h *PassportHandler) AuthCookie(ctx context.Context, req *passport.AuthCookieRequest, rsp *passport.AuthCookieResponse) (err error) {
 	// TODO
-	return nil
+	return
 }

@@ -98,7 +98,6 @@ API 与用户端通讯使用HTTPS 协议
 ## 二、公共请求头
 | 参数     | 值        | 类型   | 说明     | 必须   | 
 |:--------:|:---------:|:------:|:--------:|:------:|
-| Uid     | 1          | Int    | 用户ID   | true   |
 | Token   | token      | String | 令牌     | true   |
 
 ## 三、返回结构体
@@ -114,14 +113,13 @@ API 与用户端通讯使用HTTPS 协议
 {
   "data": {
     "token_info": {
-      "uid": 354248604778497,
-      "token": "954b3779-43cb-4777-9209-900ee78144dc",
-      "refresh_token": "80be6212-d964-4b02-9280-30c0130084e8",
-      "expired_at": 1587108523
+      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
+      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
+      "expired_at": 1581004914
     }
   },
   "errno": 0,
-  "t": 1578468523883044600
+  "t": 1580997714766577200
 }
 ```
 

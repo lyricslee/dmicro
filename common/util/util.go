@@ -38,14 +38,15 @@ func WriteError(w http.ResponseWriter, err error) {
 	w.Write(b)
 }
 
-func GetHeaderFromContext(ctx context.Context) (*typ.Header, error) {
+func GetMetaDataFromContext(ctx context.Context) (*typ.MetaData, error) {
 	md, ok := metadata.FromContext(ctx)
 	if !ok {
 		log.Error("metadata.FromContext error")
-		return nil, fmt.Errorf("GetHeaderFromContext: metadata.FromContext error")
+		return nil, fmt.Errorf("GetMetaDataFromContext: metadata.FromContext error")
 	}
 
-	header := typ.Header{}
+	log.Debug(md)
+	header := typ.MetaData{}
 	header.Token = md["Token"]
 	header.Appid, _ = strconv.Atoi(md["App-Id"])
 	header.Uid, _ = strconv.ParseInt(md["Uid"], 10, 64)

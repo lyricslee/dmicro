@@ -1,25 +1,24 @@
 package auth
 
 import (
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+
 	"github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2/config/cmd"
 	"github.com/micro/go-micro/v2/util/ctx"
 	"github.com/micro/micro/v2/plugin"
-	"net/http"
-	"net/url"
-	"strings"
 
 	"dmicro/common/log"
 	"dmicro/common/util"
 	passport "dmicro/srv/passport/api"
 )
 
-var (
-	passportClient passport.PassportService
-)
-
 type auth struct {
-	opts Options
+	opts           Options
+	passportClient passport.PassportService
 }
 
 func newPlugin(opts ...Option) plugin.Plugin {
@@ -49,14 +48,30 @@ func (a *auth) Handler() plugin.Handler {
 
 			cx := ctx.FromRequest(r)
 			var err error
-			// Token
+
 			if token := strings.Join(r.Header["Token"], ","); token != "" {
-				_, err = passportClient.AuthToken(cx, &passport.AuthTokenRequest{})
+				// Token
+				log.Debug("AuthToken...")
+				rsp, e := a.passportClient.AuthToken(cx, &passport.AuthTokenRequest{})
+				log.Debug(rsp)
+				if e == nil {
+					r.Header.Set("App-Id", strconv.Itoa(int(rsp.Appid)))
+					r.Header.Set("Uid", strconv.FormatInt(rsp.Uid, 10))
+					r.Header.Set("Plat", strconv.Itoa(int(rsp.Plat)))
+				}
+				err = e
 			} else {
 				// Cookie
 				cookie, _ := r.Cookie("SESSION")
 				val, _ := url.QueryUnescape(cookie.Value)
-				_, err = passportClient.AuthCookie(cx, &passport.AuthCookieRequest{Cookie: val})
+				rsp, e := a.passportClient.AuthCookie(cx, &passport.AuthCookieRequest{Cookie: val})
+				log.Debug(rsp)
+				if e == nil {
+					r.Header.Set("App-Id", strconv.Itoa(int(rsp.Appid)))
+					r.Header.Set("Uid", strconv.FormatInt(rsp.Uid, 10))
+					r.Header.Set("Plat", strconv.Itoa(int(rsp.Plat)))
+				}
+				err = e
 
 			}
 			if err != nil {
@@ -70,8 +85,8 @@ func (a *auth) Handler() plugin.Handler {
 	}
 }
 
-func (*auth) Init(*cli.Context) error {
-	passportClient = passport.NewPassportService("go.micro.srv.passport", *cmd.DefaultCmd.Options().Client)
+func (a *auth) Init(*cli.Context) error {
+	a.passportClient = passport.NewPassportService("go.micro.srv.passport", *cmd.DefaultCmd.Options().Client)
 	return nil
 }
 

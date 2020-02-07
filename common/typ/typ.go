@@ -1,6 +1,6 @@
 package typ
 
-type Header struct {
+type MetaData struct {
 	Token string // 登录令牌
 	Appid int    // appid
 	Uid   int64  // 用户id

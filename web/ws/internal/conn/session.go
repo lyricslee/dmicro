@@ -147,7 +147,7 @@ func (sess *session) Close() {
 	log.Debug("连接关闭")
 
 	client := dao.GetRedisClient()
-	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
+	key := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	client.Del(key)
 
 }
@@ -178,14 +178,14 @@ func (sess *session) Start() {
 	server.Add(sess)
 
 	client := dao.GetRedisClient()
-	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
+	key := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	if err := client.Set(key, config.GateId, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {
 		log.Error(err)
 		sess.Close()
 		return
 	}
 
-	connId := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
+	connId := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	log.Debug(connId)
 
 	go sess.readLoop()
@@ -305,7 +305,7 @@ func (sess *session) handlePing(req *Message) (rsp *Message, err error) {
 	}
 
 	client := dao.GetRedisClient()
-	key := fmt.Sprintf(constant.REDIS_KEY_CONNID, sess.appid, sess.uid, sess.platform)
+	key := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	if err = client.Set(key, config.GateId, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {
 		log.Error(err)
 		return

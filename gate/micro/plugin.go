@@ -16,9 +16,9 @@ import (
 )
 
 func initPlugin() {
-	initMetrics()
-	initTrace()
-	initBreaker()
+	//initMetrics()
+	//initTrace()
+	//initBreaker()
 	initAuth()
 }
 

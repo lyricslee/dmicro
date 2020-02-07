@@ -42,12 +42,16 @@
 请求参数 : 参数类型 body
 | 参数     | 值                  | 类型   | 说明          | 必须   | 
 |:---------|:--------------------|:-------|:--------------|:-------|
+| appid    | 1                   | Int    | appid         | true   |
+| plat     | 1                   | Int    | 平台类型      | true   |
 | mobile   | 13805918888         | String | 手机号        | true   |
 | code     | 5188                | String | 验证码        | true   |
 
 示例：
 ```json
 {
+  "appid": 1,
+  "plat": 1,
   "mobile": "13805918888",
   "code": "5188"
 }
@@ -58,14 +62,13 @@
 {
   "data": {
     "token_info": {
-      "uid": 354248604778497,
-      "token": "954b3779-43cb-4777-9209-900ee78144dc",
-      "refresh_token": "80be6212-d964-4b02-9280-30c0130084e8",
-      "expired_at": 1587108523
+      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
+      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
+      "expired_at": 1581004914
     }
   },
   "errno": 0,
-  "t": 1578468523883044600
+  "t": 1580997714766577200
 }
 ```
 
@@ -94,14 +97,13 @@
 {
   "data": {
     "token_info": {
-      "uid": 354248604778497,
-      "token": "a6bb934f-3ca8-4170-bfba-f537de2e55da",
-      "refresh_token": "575b83d1-78e1-4c87-91f5-d1567ee82207",
-      "expired_at": 1587109011
+      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
+      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
+      "expired_at": 1581004914
     }
   },
   "errno": 0,
-  "t": 1578469011551142000
+  "t": 1580997714766577200
 }
 ```
 
@@ -116,12 +118,16 @@
 请求参数 : 参数类型 body
 | 参数     | 值                  | 类型   | 说明          | 必须   | 
 |:---------|:--------------------|:-------|:--------------|:-------|
+| appid    | 1                   | Int    | appid         | true   |
+| plat     | 1                   | Int    | 平台类型      | true   |
 | mobile   | 13805918888         | String | 手机号        | true   |
 | passwd   | 123456              | String | 密码          | true   |
 
 示例：
 ```json
 {
+  "appid": 1,
+  "plat": 1,
   "passwd": "123456"
 }
 ```
@@ -131,14 +137,13 @@
 {
   "data": {
     "token_info": {
-      "uid": 354248604778497,
-      "token": "18b17014-748b-47d8-a1ff-8bd9d8bd6c8c",
-      "refresh_token": "c9ccdd34-030f-4ead-9656-8fe2fb471996",
-      "expired_at": 1587109179
+      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
+      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
+      "expired_at": 1581004914
     }
   },
   "errno": 0,
-  "t": 1578469179132453000
+  "t": 1580997714766577200
 }
 ```
 
@@ -153,12 +158,16 @@
 请求参数 : 参数类型 body
 | 参数     | 值                  | 类型   | 说明          | 必须   | 
 |:---------|:--------------------|:-------|:--------------|:-------|
+| appid    | 1                   | Int    | appid         | true   |
+| plat     | 1                   | Int    | 平台类型      | true   |
 | platform | wechat              | String | 第三方平台    | true   |
 | code     | xdbNkmeqWn          | String | 授权码        | true   |
 
 示例：
 ```json
 {
+  "appid": 1,
+  "plat": 1,
   "platform": "weixin",
   "code": "xdbNkmeqWn"
 }
@@ -169,13 +178,12 @@
 {
   "data": {
     "token_info": {
-      "uid": 354248604778497,
-      "token": "18b17014-748b-47d8-a1ff-8bd9d8bd6c8c",
-      "refresh_token": "c9ccdd34-030f-4ead-9656-8fe2fb471996",
-      "expired_at": 1587109179
+      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
+      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
+      "expired_at": 1581004914
     }
   },
   "errno": 0,
-  "t": 1578469179132453000
+  "t": 1580997714766577200
 }
 ```
