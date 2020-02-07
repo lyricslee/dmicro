@@ -118,7 +118,7 @@ func (p *PassportService) AuthToken(ctx context.Context) (rsp *passport.AuthToke
 	md, ok := metadata.FromContext(ctx)
 	if !ok {
 		log.Error("metadata.FromContext error")
-		err = fmt.Errorf("SmsLogin: metadata.FromContext error")
+		err = fmt.Errorf("AuthToken: metadata.FromContext error")
 		return
 	}
 

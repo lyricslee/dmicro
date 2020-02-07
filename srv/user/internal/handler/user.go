@@ -2,9 +2,9 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"sync"
 
+	"dmicro/common/log"
 	user "dmicro/srv/user/api"
 	"dmicro/srv/user/internal/service"
 )
@@ -27,10 +27,9 @@ func GetUserHandler() *UserHandler {
 
 func (h *UserHandler) Create(ctx context.Context, req *user.Request, rsp *user.Response) (err error) {
 	if err = h.svc.Create(req.Uid, req.Mobile); err != nil {
-		fmt.Println("xxxxxxxxxxxx")
+		log.Debug(err)
 		return
 	}
-	fmt.Println(req.Uid, req.Mobile)
-	rsp = &user.Response{}
+	log.Debugf("uid=%d mobile=%s", req.Uid, req.Mobile)
 	return
 }

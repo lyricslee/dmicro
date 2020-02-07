@@ -1,12 +1,9 @@
 package context
 
 import (
-	"net/http"
-	"time"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
 
-	"dmicro/common/errors"
 	"dmicro/pkg/util/convert"
 )
 
@@ -38,30 +35,19 @@ func (c *DmContext) ParseJSON(obj interface{}) error {
 }
 
 func (c *DmContext) Response(obj interface{}) {
-	if obj == nil {
-		obj = gin.H{}
-	}
-
-	m := make(map[string]interface{})
-	m["errno"] = 0
-	m["data"] = obj
-	m["t"] = time.Now().UnixNano()
-	c.response(http.StatusOK, m)
+	//if obj == nil {
+	//	obj = gin.H{}
+	//}
+	//
+	//m := make(map[string]interface{})
+	//m["data"] = obj
+	//m["t"] = time.Now().UnixNano()
+	//c.response(http.StatusOK, m)
+	c.response(http.StatusOK, obj)
 }
 
 func (c *DmContext) ResponseError(err error) {
-	ce := errors.Parse(err.Error())
-
-	m := make(map[string]interface{})
-	m["errno"] = ce.Errno
-	m["errmsg"] = ce.Errmsg
-	m["t"] = time.Now().UnixNano()
-	if ce.Errno == -1 {
-		c.response(http.StatusInternalServerError, m)
-	} else {
-		c.response(499, m)
-	}
-
+	c.response(499, err)
 }
 
 func (c *DmContext) response(status int, obj interface{}) {

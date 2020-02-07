@@ -9,7 +9,7 @@ API 与用户端通讯使用HTTPS 协议
 > - https://api.dmicro.cn  # 正式环境     
 ### 3、版本
 将API的版本号放入URL,参考 [Github](https://developer.github.com/v3/media/#request-specific-version)
-> https://api.dmicro.cn/v1/
+> https://api.dmicro.com/v1/
 ### 4、路径
 路径又称"终点"（endpoint），表示API的具体网址。
 
@@ -18,9 +18,9 @@ API 与用户端通讯使用HTTPS 协议
 例如：
 
 ```
-- https://api.dmicro.cn/v1/users
-- https://api.dmicro.cn/v1/menus
-- https://api.dmicro.cn/v1/roles
+- https://api.dmicro.com/v1/users
+- https://api.dmicro.com/v1/menus
+- https://api.dmicro.com/v1/roles
 ```
 ### 5、HTTP(URL)的动词
 
@@ -68,20 +68,14 @@ API 与用户端通讯使用HTTPS 协议
 ```
 
 ### 8、错误处理（Error handling）
-如果状态码是500，返回服务器内部错误信息
-```json
-{
-    errno: -1,
-    errmsg: "服务器内部错误"
-}
-```
 
-如果状态码是499，返回业务错误信息
 ```json
 {
-     errno: 1004,
-     errmsg: "密码错误"
- }
+    "id": "dmicro",
+    "code": 1005,
+    "detail": "令牌已过期",
+    "status": ""
+}
 ```
 
 ### 9、返回结果
@@ -101,27 +95,18 @@ API 与用户端通讯使用HTTPS 协议
 | Token   | token      | String | 令牌     | true   |
 
 ## 三、返回结构体
-| 参数     | 值        | 类型   | 说明     | 必须   | 
-|:--------:|:---------:|:------:|:--------:|:------:|
-| errno    | errno     | Int    | 错误码   | true   |
-| errmsg   | errmsg    | String | 错误消息 | false  |
-| data     | data      | String | 消息主体 | false  |
-| t        | t         | Int    | 时间戳   | true   |
 
-成功
-```json
+不同业务返回不同结构
+
+示例
+
 {
-  "data": {
-    "token_info": {
-      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
-      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
-      "expired_at": 1581004914
-    }
-  },
-  "errno": 0,
-  "t": 1580997714766577200
+  "token_info": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwODA4ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.Bzfk4xwVaRfm7rpZXT2fsn4tqWC_bd76GWW2tPT5MhJWQcQAP6bzlpx3t2M7GPqH3A9OWPoHxr2bffrnJjuNDacfdMLu_PO8tg8qdoi4e55kCREvEiKyXB9SxyWYadioiyrs00qMt8VfakN6L9PosgS7xtCFADUkoGBTyHdJXzE",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM2NjU2ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.mW09Ga6PJ5_od1KK0HGK03CpLq_cWrims-9zOUioRdjARAuXfg7kCVnhwJwSl8hqXJ7_rq68TO5buhErEVmnD7wLRIFJA7HGkI39sN9SrqwvTP17lWyCySAIjdQy8vtMml5ZhxCMNlMXGaytTeCkV5vEn_lzVyQsr4gwbRfqWwk",
+    "expires_at": 1581080881
+  }
 }
-```
 
 ## 四、说明
 移动端的接口,可不必遵循Restful规范,统一用POST+JSON规范

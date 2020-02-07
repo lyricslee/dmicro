@@ -2,15 +2,12 @@ package util
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/micro/go-micro/v2/metadata"
 
-	"dmicro/common/errors"
 	"dmicro/common/log"
 	"dmicro/common/typ"
 )
@@ -20,22 +17,8 @@ func WriteError(w http.ResponseWriter, err error) {
 		w.Header().Set("Content-Type", "application/json")
 	}
 
-	e := errors.Parse(err.Error())
-	response := map[string]interface{}{
-		"t": time.Now().UnixNano(),
-	}
-	response["errno"] = e.Errno
-	response["errmsg"] = e.Errmsg
-
-	b, _ := json.Marshal(response)
-	w.Header().Set("Content-Type", "application/json")
-	if e.Errno == -1 {
-		w.WriteHeader(500)
-	} else {
-		w.WriteHeader(499)
-	}
-
-	w.Write(b)
+	w.WriteHeader(499)
+	w.Write([]byte(err.Error()))
 }
 
 func GetMetaDataFromContext(ctx context.Context) (*typ.MetaData, error) {

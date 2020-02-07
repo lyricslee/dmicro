@@ -148,7 +148,7 @@ func (sf *Sonyflake) toID() (uint64, error) {
 //			return ip, nil
 //		}
 //	}
-//	return nil, errors.NewError("no private ip address")
+//	return nil, errors.New("no private ip address")
 //}
 
 //func isPrivateIPv4(ip net.IP) bool {

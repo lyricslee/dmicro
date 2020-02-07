@@ -37,6 +37,12 @@ docker run -d --name etcd \
 ```
 import sql scripts
 ```
+
+## redis
+```
+docker run -d --name redis -p 6379:6379 redis
+```
+
 ## gate micro web
 ```
 cd gate/micro
@@ -71,10 +77,11 @@ go build
 接口地址注意大小写，默认端口8082
 ```
 curl -X POST \
-  'http://localhost:8082/dd/passport/SmsLogin' \
+  'http://localhost:8080/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
-  -H 'App-Id: 1' \
   -d '{
+    "appid": 1,
+    "plat": 1,
     "mobile": "13705918888",
     "code": "123456"
 }'
@@ -99,8 +106,9 @@ go build
 curl -X POST \
   'http://localhost:8080/dd/passport/SmsLogin' \
   -H 'Content-Type: application/json' \
-  -H 'App-Id: 1' \
   -d '{
+    "appid": 1,
+    "plat": 1,
     "mobile": "13705918888",
     "code": "123456"
 }'

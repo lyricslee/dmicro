@@ -5,9 +5,9 @@ const (
 )
 
 var (
-	ErrInvalidParam  = NewError(1001, "参数错误")
-	ErrInvalidToken  = NewError(1002, "无效的令牌")
-	ErrUserNotExists = NewError(1003, "用户不存在")
-	ErrPasswordError = NewError(1004, "密码错误")
-	ErrTokenExpired  = NewError(1005, "令牌已过期")
+	ErrInvalidParam  = newError(1001, "参数错误")
+	ErrInvalidToken  = newError(1002, "无效的令牌")
+	ErrUserNotExists = newError(1003, "用户不存在")
+	ErrPasswordError = newError(1004, "密码错误")
+	ErrTokenExpired  = newError(1005, "令牌已过期")
 )

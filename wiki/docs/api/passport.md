@@ -23,11 +23,7 @@
 响应数据: 
 ```json
 {
-  "data": {
-    "code": "8888"
-  },
-  "errno": 0,
-  "t": 1578466107653492700
+  "code": "8888"
 }
 ```
 
@@ -60,15 +56,11 @@
 响应数据: 
 ```json
 {
-  "data": {
-    "token_info": {
-      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
-      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
-      "expired_at": 1581004914
-    }
-  },
-  "errno": 0,
-  "t": 1580997714766577200
+  "token_info": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwODA4ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.Bzfk4xwVaRfm7rpZXT2fsn4tqWC_bd76GWW2tPT5MhJWQcQAP6bzlpx3t2M7GPqH3A9OWPoHxr2bffrnJjuNDacfdMLu_PO8tg8qdoi4e55kCREvEiKyXB9SxyWYadioiyrs00qMt8VfakN6L9PosgS7xtCFADUkoGBTyHdJXzE",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM2NjU2ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.mW09Ga6PJ5_od1KK0HGK03CpLq_cWrims-9zOUioRdjARAuXfg7kCVnhwJwSl8hqXJ7_rq68TO5buhErEVmnD7wLRIFJA7HGkI39sN9SrqwvTP17lWyCySAIjdQy8vtMml5ZhxCMNlMXGaytTeCkV5vEn_lzVyQsr4gwbRfqWwk",
+    "expires_at": 1581080881
+  }
 }
 ```
 
@@ -95,15 +87,11 @@
 响应数据: 
 ```json
 {
-  "data": {
-    "token_info": {
-      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
-      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
-      "expired_at": 1581004914
-    }
-  },
-  "errno": 0,
-  "t": 1580997714766577200
+  "token_info": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwODA4ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.Bzfk4xwVaRfm7rpZXT2fsn4tqWC_bd76GWW2tPT5MhJWQcQAP6bzlpx3t2M7GPqH3A9OWPoHxr2bffrnJjuNDacfdMLu_PO8tg8qdoi4e55kCREvEiKyXB9SxyWYadioiyrs00qMt8VfakN6L9PosgS7xtCFADUkoGBTyHdJXzE",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM2NjU2ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.mW09Ga6PJ5_od1KK0HGK03CpLq_cWrims-9zOUioRdjARAuXfg7kCVnhwJwSl8hqXJ7_rq68TO5buhErEVmnD7wLRIFJA7HGkI39sN9SrqwvTP17lWyCySAIjdQy8vtMml5ZhxCMNlMXGaytTeCkV5vEn_lzVyQsr4gwbRfqWwk",
+    "expires_at": 1581080881
+  }
 }
 ```
 
@@ -135,15 +123,11 @@
 响应数据: 
 ```json
 {
-  "data": {
-    "token_info": {
-      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
-      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
-      "expired_at": 1581004914
-    }
-  },
-  "errno": 0,
-  "t": 1580997714766577200
+  "token_info": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwODA4ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.Bzfk4xwVaRfm7rpZXT2fsn4tqWC_bd76GWW2tPT5MhJWQcQAP6bzlpx3t2M7GPqH3A9OWPoHxr2bffrnJjuNDacfdMLu_PO8tg8qdoi4e55kCREvEiKyXB9SxyWYadioiyrs00qMt8VfakN6L9PosgS7xtCFADUkoGBTyHdJXzE",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM2NjU2ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.mW09Ga6PJ5_od1KK0HGK03CpLq_cWrims-9zOUioRdjARAuXfg7kCVnhwJwSl8hqXJ7_rq68TO5buhErEVmnD7wLRIFJA7HGkI39sN9SrqwvTP17lWyCySAIjdQy8vtMml5ZhxCMNlMXGaytTeCkV5vEn_lzVyQsr4gwbRfqWwk",
+    "expires_at": 1581080881
+  }
 }
 ```
 
@@ -176,14 +160,10 @@
 响应数据: 
 ```json
 {
-  "data": {
-    "token_info": {
-      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwMDQ5MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.ygGAn-8B1z2iVDfBNbSSNqA21-TjMeZBSyb-Hk_MmVZUOtZMllNoddsOuho4pOnQ5RyaqE4dHTdm67LycylSvYbvnhnBHk3qOhBLvcFJCaqgpsklhBf_QcRJTWh8Hy9mRh9AMO6xi9xJncuceOpDmrSahzfSdRp6U_-4rY-oppc",
-      "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM1ODk3MTQsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.huN_PYaXSlteC5VPDBuq9sV7Fqw08Fd8DlF1zkZU0CYfULsL6Lt_6lHNmwqvdLeCBtD2ZdI6UZEdmfbljwhXj0jEll5qGmyiHH8C9Yxygceua8-NhfGRAhCW4Nc3vnd50jJcs0xD8fKuApeWunseIvVb7mvFIvMHg_vJiNY6QZU",
-      "expired_at": 1581004914
-    }
-  },
-  "errno": 0,
-  "t": 1580997714766577200
+  "token_info": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwODA4ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.Bzfk4xwVaRfm7rpZXT2fsn4tqWC_bd76GWW2tPT5MhJWQcQAP6bzlpx3t2M7GPqH3A9OWPoHxr2bffrnJjuNDacfdMLu_PO8tg8qdoi4e55kCREvEiKyXB9SxyWYadioiyrs00qMt8VfakN6L9PosgS7xtCFADUkoGBTyHdJXzE",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM2NjU2ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.mW09Ga6PJ5_od1KK0HGK03CpLq_cWrims-9zOUioRdjARAuXfg7kCVnhwJwSl8hqXJ7_rq68TO5buhErEVmnD7wLRIFJA7HGkI39sN9SrqwvTP17lWyCySAIjdQy8vtMml5ZhxCMNlMXGaytTeCkV5vEn_lzVyQsr4gwbRfqWwk",
+    "expires_at": 1581080881
+  }
 }
 ```
