@@ -99,7 +99,7 @@ API 与用户端通讯使用HTTPS 协议
 不同业务返回不同结构
 
 示例
-
+```json
 {
   "token_info": {
     "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODEwODA4ODEsIkluZm8iOnsiQXBwaWQiOjEsIlVpZCI6MzU2NTI4MDM5MTMzMTg1LCJQbGF0IjoxLCJEZXZpY2VJZCI6IiJ9fQ.Bzfk4xwVaRfm7rpZXT2fsn4tqWC_bd76GWW2tPT5MhJWQcQAP6bzlpx3t2M7GPqH3A9OWPoHxr2bffrnJjuNDacfdMLu_PO8tg8qdoi4e55kCREvEiKyXB9SxyWYadioiyrs00qMt8VfakN6L9PosgS7xtCFADUkoGBTyHdJXzE",
@@ -107,6 +107,7 @@ API 与用户端通讯使用HTTPS 协议
     "expires_at": 1581080881
   }
 }
+```
 
 ## 四、说明
 移动端的接口,可不必遵循Restful规范,统一用POST+JSON规范

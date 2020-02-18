@@ -11,8 +11,6 @@ module.exports = {
             { text: '首页', link: '/' },
             { text: '开发文档', link: '/api/' },
             { text: '指南', link: '/guide/' }
-            // ,
-            // { text: '开发文档', link: '/api/' }
         ],
         sidebar: {
             '/guide/': getGuideSidebar('指南'),

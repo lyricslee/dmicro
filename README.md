@@ -4,7 +4,7 @@
 - [快速开始](#快速开始)
 - [UMS统一消息系统](#UMS统一消息系统)
 - [分布式事务处理](#分布式事务处理)
-- [drone CI CD环境搭建指南](#DRONE CI CD环境搭建指南)
+- [DRONE CI CD环境搭建指南](#DRONE CI CD环境搭建指南)
   - [vagrant环境搭建](docs/drone/vagrant.md)
   - [gitea安装配置](docs/drone/gitea.md)
   - [私有仓库harbor安装配置](docs/drone/harbor.md)

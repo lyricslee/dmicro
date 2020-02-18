@@ -52,7 +52,7 @@ virtualbox_centos-7.4.json文件内容如下：
 ```
 
 在命令行下进入E:\vagrant目录执行
-**vagrant.exe add box box_files\CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.json**
+**vagrant.exe box add box_files\CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.json**
 
 <img src="https://github.com/fztcjjl/dmicro/raw/master/docs/drone/img/vagrant/5.png">
 
