@@ -25,6 +25,7 @@ type natsBroker struct {
 	Addrs []string `json:"addrs,omitempty"`
 }
 
+// 读取配置项基本与 dd 服务一样，多了一个 nats broker 的配置。
 func Init() {
 	config.Init()
 

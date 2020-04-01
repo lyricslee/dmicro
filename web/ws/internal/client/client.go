@@ -13,6 +13,7 @@ var (
 	UmsClient ums.UmsService
 )
 
+// ums 服务客户端
 func Init(service web.Service) {
 	cli := grpc.NewClient(
 		client.Registry(service.Options().Registry),

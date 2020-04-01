@@ -18,11 +18,13 @@ const (
 	heartbeatInterval = 60
 )
 
+// ws 消息 buf
 type wsMessage struct {
 	typ int
 	buf []byte
 }
 
+// session 结构体，定义了用户 uid 等信息，此外还有 rchan, wchan 消息读写 channel。
 type session struct {
 	sync.Mutex
 	appid    int    // appid
@@ -31,11 +33,12 @@ type session struct {
 	conn     *websocket.Conn
 	rchan    chan *wsMessage
 	wchan    chan *wsMessage
-	echan    chan interface{}
+	echan    chan interface{} // 异常处理
 	closed   bool
 	ht       time.Time // 最近一次心跳时间
 }
 
+// new session init
 func NewSession(appid, platform int, uid uint64, conn *websocket.Conn) (sess *session) {
 	sess = &session{
 		appid:    appid,
@@ -63,19 +66,20 @@ func (sess *session) readLoop() {
 		if !(typ == websocket.TextMessage || typ == websocket.BinaryMessage) {
 			continue
 		}
-
+        // 从 ws 连接读取数据，读到数据就扔到 sess.rchan 这个 channel 里面。
 		msg := &wsMessage{
 			typ: typ,
 			buf: data,
 		}
 		select {
 		case sess.rchan <- msg:
-		case <-sess.echan:
+		case <-sess.echan: // 异常情况，没有读到数据。可能是链接断开。
 			return
 		}
 	}
 }
 
+// 写 loop 这边，从 sess.wchan 读取到数据就写回给客户端。
 func (sess *session) writeLoop() {
 	for {
 		select {
@@ -91,20 +95,23 @@ func (sess *session) writeLoop() {
 }
 
 // 发送消息
+// 收发消息都是通过 channel 来做的
 func (sess *session) WriteBinaryMessage(buf []byte) (err error) {
 	msg := &wsMessage{typ: websocket.BinaryMessage, buf: buf}
 	select {
 	case sess.wchan <- msg:
 		IncSendSucc()
-	case <-sess.echan:
+	case <-sess.echan: // 断开连接
 		err = ErrConnectionLost
-	default:
+	default: // 发送队列满了
 		err = ErrSendQueueFull
 		IncSendFailed()
 	}
 	return
 }
 
+// session 写函数，写到 wsMessage 里面。并且发送
+// 发送到 sess.wchan 管道去 response 消息，并且增加成功的次数。
 func (sess *session) WriteTextMessage(buf []byte) (err error) {
 	msg := &wsMessage{typ: websocket.TextMessage, buf: buf}
 	select {
@@ -146,12 +153,14 @@ func (sess *session) Close() {
 	server.Del(sess)
 	log.Debug("连接关闭")
 
+	// 断开连接的时候从 redis 输出 key，key 的格式 UMS:CONNID:appid:uid:plat
 	client := dao.GetRedisClient()
 	key := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	client.Del(key)
 
 }
 
+// session 存活检查
 func (sess *session) IsAlive() bool {
 	sess.Lock()
 	defer sess.Unlock()
@@ -171,12 +180,14 @@ func (sess *session) KeepAlive() {
 	sess.ht = time.Now()
 }
 
+// 建立连接
 func (sess *session) Start() {
 	log.Debug("连接建立")
 
 	// TODO: auth
 	server.Add(sess)
 
+	// 保存 session id 在 redis 中，并且设置有效期。
 	client := dao.GetRedisClient()
 	key := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	if err := client.Set(key, config.GateId, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {
@@ -188,10 +199,12 @@ func (sess *session) Start() {
 	connId := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	log.Debug(connId)
 
+	// 启动的时候创建读写 loop 和 healthCheck 对应的 go routine
 	go sess.readLoop()
 	go sess.writeLoop()
 	go sess.healthCheck()
 
+	// 读取消息并且处理
 	for {
 		msg, err := sess.ReadMessage()
 		if err != nil {
@@ -210,6 +223,7 @@ func (sess *session) handleMessage(msg *wsMessage) {
 	}
 }
 
+// 文本消息
 func (sess *session) handleTextMessage(msg *wsMessage) {
 	// 解析消息体
 	req, err := DecodeJSON(msg.buf)
@@ -218,6 +232,8 @@ func (sess *session) handleTextMessage(msg *wsMessage) {
 		log.Error(err)
 		return
 	}
+
+	// 从 session 里面读取用户信息
 	req.AppId = int32(sess.appid)
 	req.Uid = sess.uid
 	req.Platform = int32(sess.platform)
@@ -225,6 +241,8 @@ func (sess *session) handleTextMessage(msg *wsMessage) {
 		sess.handlePing(req)
 		return
 	}
+
+	// 根据消息类型调用对用的处理函数
 	if h := MessageHandlers[int(req.Type)]; h == nil {
 		log.Error(err)
 		return
@@ -233,6 +251,7 @@ func (sess *session) handleTextMessage(msg *wsMessage) {
 	}
 }
 
+// Binary 消息类型
 func (sess *session) handleBinaryMessage(msg *wsMessage) {
 	if len(msg.buf) < 32 {
 		log.Error("Invalid packet")
@@ -256,6 +275,7 @@ func (sess *session) handleBinaryMessage(msg *wsMessage) {
 	}
 }
 
+// 客户端存活检查（每个 1 秒）
 func (sess *session) healthCheck() {
 	tick := time.NewTicker(1 * time.Second)
 	for {
@@ -278,6 +298,7 @@ type Ping struct {
 type Pong struct {
 }
 
+// Ping
 func (sess *session) handlePing(req *Message) (rsp *Message, err error) {
 	sess.KeepAlive()
 
@@ -286,6 +307,7 @@ func (sess *session) handlePing(req *Message) (rsp *Message, err error) {
 		return
 	}
 
+	// response：PONG
 	rsp = &Message{
 		Type:    constant.PONG,
 		Seq:     req.Seq,
@@ -304,6 +326,7 @@ func (sess *session) handlePing(req *Message) (rsp *Message, err error) {
 		}
 	}
 
+	// 更新 redis 中的 session id 有效期
 	client := dao.GetRedisClient()
 	key := fmt.Sprintf(constant.RedisKeyConnid, sess.appid, sess.uid, sess.platform)
 	if err = client.Set(key, config.GateId, time.Duration(2*heartbeatInterval)*time.Second).Err(); err != nil {

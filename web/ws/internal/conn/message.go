@@ -18,15 +18,18 @@ const (
 
 type messageHandler func(*session, *Message, int)
 
+// 定义消息处理 ID：对应的处理函数
 var (
 	MessageHandlers = make(map[int]messageHandler)
 )
 
+// 1. 普通的 request 2. IM 消息
 func init() {
 	MessageHandlers[constant.REQ] = handleReq
 	MessageHandlers[constant.IM] = handleIM
 }
 
+// 普通 request 请求消息内容
 type Message struct {
 	AppId    int32           `json:"appid,omitempty"`    // appid
 	Uid      uint64          `json:"uid,omitempty"`      // 用户ID
@@ -46,6 +49,7 @@ func DecodeJSON(buf []byte) (msg *Message, err error) {
 	return
 }
 
+// 二进制 decode
 func DecodeBinary(b []byte) (m *Message, err error) {
 
 	buf := &bytes.Buffer{}
@@ -90,6 +94,7 @@ func DecodeBinary(b []byte) (m *Message, err error) {
 	return
 }
 
+// 处理普通的请求，通过 UMS 消息框架。
 func handleReq(sess *session, req *Message, mtyp int) {
 	r := &ums.G2LRequest{}
 	r.Proto = int32(mtyp)

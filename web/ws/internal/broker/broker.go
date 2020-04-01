@@ -15,6 +15,7 @@ import (
 
 var b broker.Broker
 
+// 初始化并且连接 nats broker 服务器
 func Init() {
 	b = nats.NewBroker(broker.Addrs(config.NatsBroker.Addrs...))
 
@@ -27,6 +28,7 @@ func Init() {
 	}
 
 	// TODO: config gateid
+	// 订阅 L2G 的消息
 	topic := fmt.Sprintf(constant.TOPIC_L2G_PREFIX, config.GateId)
 	if _, err := b.Subscribe(topic, handleL2G); err != nil {
 		log.Fatalf("Broker subscribe error: %v", err)

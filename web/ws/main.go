@@ -13,6 +13,8 @@ import (
 	"dmicro/web/ws/internal/router"
 )
 
+// 初始化 ws websocket service 这一块基本与 dd 代码一致
+
 func main() {
 	// Config
 	config.Init()

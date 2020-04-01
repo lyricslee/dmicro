@@ -16,11 +16,13 @@ type Server struct {
 	sessions map[*session]bool
 }
 
+// sync.Once 保证这个 server 是单例的，不会被创建多次。
 var (
 	server     *Server
 	onceServer sync.Once
 )
 
+// 创建 onceServer 的时候初始化，sessions 和 users 数据
 func GetServer() *Server {
 	onceServer.Do(func() {
 		server = &Server{
@@ -32,6 +34,7 @@ func GetServer() *Server {
 	return server
 }
 
+// 通过 id 查找到对应 user 的 sess 然后写消息。
 func WriteTextMessage(m *Message) (err error) {
 	id := fmt.Sprintf("%d:%d:%d", m.AppId, m.Uid, m.Platform)
 	if sess := server.users[id]; sess != nil {
@@ -41,6 +44,7 @@ func WriteTextMessage(m *Message) (err error) {
 	return
 }
 
+// 写二进制消息
 func WriteBinaryMessage(m *Message) (err error) {
 	var (
 		n int32 = 0
@@ -105,6 +109,7 @@ func Response(msg *Message) {
 	}
 }
 
+// 建立连接的时候把用户 sess 信息添加到 users 列表中
 func (s *Server) Add(sess *session) {
 	s.Lock()
 	defer s.Unlock()
@@ -113,6 +118,7 @@ func (s *Server) Add(sess *session) {
 	IncOnlineNum()
 }
 
+// 删除离线用户
 func (s *Server) Del(sess *session) {
 	s.Lock()
 	defer s.Unlock()
@@ -122,6 +128,7 @@ func (s *Server) Del(sess *session) {
 	DecOnlineNum()
 }
 
+// 通过 id 或者 session
 func (s *Server) Get(id string) (sess *session) {
 	s.Lock()
 	defer s.Unlock()
@@ -129,6 +136,7 @@ func (s *Server) Get(id string) (sess *session) {
 	return
 }
 
+// 统计在在线人数
 type Stats struct {
 	OnlineNum     int64 `json:"online_num"`
 	SendSuccNum   int64 `json:"send_succ_num"`

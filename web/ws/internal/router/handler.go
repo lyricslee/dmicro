@@ -18,11 +18,13 @@ var upgrader = websocket.Upgrader{
 // for websocket test
 func say(w http.ResponseWriter, r *http.Request) {
 	// Upgrade request to websocket
+	// 更新 request 参数到 ws 结构体
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		return
 	}
 
+	// 创建一个 goroutine 来处理 ws 请求
 	go func() {
 		for {
 			_, msg, err := ws.ReadMessage()
@@ -40,6 +42,8 @@ func say(w http.ResponseWriter, r *http.Request) {
 
 func join(w http.ResponseWriter, r *http.Request) {
 	log.Info(r.Header)
+
+	// 解析 Post 请求 Form 表单
 	r.ParseForm()
 
 	var (
@@ -47,6 +51,7 @@ func join(w http.ResponseWriter, r *http.Request) {
 		uid   uint64
 		plat  int
 	)
+	// 数据类型转换
 	convert.ConvertAssign(&appid, r.Form.Get("appid"))
 	convert.ConvertAssign(&uid, r.Form.Get("uid"))
 	convert.ConvertAssign(&plat, r.Form.Get("plat"))
@@ -68,8 +73,7 @@ func join(w http.ResponseWriter, r *http.Request) {
 	if sess := conn.GetServer().Get(fmt.Sprintf("%d:%d:%d", appid, uid, plat)); sess != nil {
 		sess.Close()
 	}
-
+    // 踢掉就的连接后创建新的连接，创建新的 session_id 并且记录在 redis
 	sess := conn.NewSession(appid, plat, uid, ws)
 	sess.Start()
-
 }

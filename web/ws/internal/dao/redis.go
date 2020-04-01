@@ -13,6 +13,7 @@ var (
 	onceRedisClient sync.Once
 )
 
+// 连接 redis
 func GetRedisClient() *redis.Client {
 	onceRedisClient.Do(func() {
 		redisClient = redis.NewClient(&redis.Options{
