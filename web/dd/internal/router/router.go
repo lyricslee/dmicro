@@ -13,6 +13,9 @@ import (
 type HandlerFunc func(*context.DmContext)
 
 // Handle registers a new request handle and middleware with the given path and method.
+// 设置路由 title
+// 注册 gin Group http 请求对应的 handler，Group 的概念就是 /api/v1 这种，
+//方便我们批量的 /api/v1 /api/v2 而不用每个接口加 v1
 func Handle(g *gin.RouterGroup, httpMethod string, relativePath string, handler HandlerFunc, title string) {
 	context.SetRouterTitle(httpMethod, path.Join(g.BasePath(), relativePath), title)
 	g.Handle(httpMethod, relativePath, func(c *gin.Context) {
@@ -69,20 +72,25 @@ func Any(g *gin.RouterGroup, relativePath string, handler HandlerFunc, title str
 	Handle(g, "TRACE", relativePath, handler, title)
 }
 
-// Router 路由
+// Router 路由，返回 http.Handler
 func Router() http.Handler {
 	gin.SetMode("debug")
+	// 初始化 gin Engine 对象
 	r := gin.New()
 
+	// http 405 errors, StatusMethodNotAllowed
 	r.NoMethod(func(ctx *gin.Context) {
 		ctx.String(http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
 		//context.New(ctx).ResponseError(fmt.Errorf(http.StatusText(http.StatusMethodNotAllowed)))
 	})
 
+	// http 404 error, StatusNotFound
 	r.NoRoute(func(ctx *gin.Context) {
 		ctx.String(http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		//context.New(ctx).ResponseError(fmt.Errorf(http.StatusText(http.StatusNotFound)))
 	})
+
+	// 我们也可以添加更多的 http 40* 错误处理
 
 	// 注册/api/v1路由
 	RegisterAPI_v1(r)

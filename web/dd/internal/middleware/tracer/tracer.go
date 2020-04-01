@@ -13,18 +13,26 @@ import (
 
 const tracerContrextKey = "Tracer-context"
 
+// 使用 Jaeger 来做分布式链路追踪
+// Jaeger在Golang中的使用 https://www.lizenghai.com/archives/6130.html
+
 func Tracer() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var sp opentracing.Span
 
-		spanCtx, err := opentracing.GlobalTracer().Extract(opentracing.TextMap, opentracing.HTTPHeadersCarrier(c.Request.Header))
+		// 初始化 trace 用 c.Request.Header
+		// 失败用 c.Request.URL.Path，成功继续记录。
+		spanCtx, err := opentracing.GlobalTracer().Extract(opentracing.TextMap,
+			opentracing.HTTPHeadersCarrier(c.Request.Header))
 		if err != nil {
 			sp = opentracing.GlobalTracer().StartSpan(c.Request.URL.Path)
 		} else {
 			sp = opentracing.GlobalTracer().StartSpan(c.Request.URL.Path, opentracing.ChildOf(spanCtx))
 		}
 
+		// defer 表示 sp.Finish() 在这个 Tracer() 函数执行完成后调用。
 		defer sp.Finish()
+
 		md := make(map[string]string)
 		if err := sp.Tracer().Inject(
 			sp.Context(),
@@ -33,14 +41,13 @@ func Tracer() gin.HandlerFunc {
 			log.Error(err)
 		}
 
+		// TODO: 没看懂
 		ctx := context.TODO()
 		ctx = opentracing.ContextWithSpan(ctx, sp)
 
 		ctx = metadata.NewContext(ctx, md)
 		c.Set(tracerContrextKey, ctx)
 
-		// Jaeger在Golang中的使用
-		// https://www.lizenghai.com/archives/6130.html
 		sp.SetTag("http.host", c.Request.Host)
 		ext.PeerAddress.Set(sp, c.Request.RemoteAddr)
 		ext.HTTPUrl.Set(sp, c.Request.URL.Path)

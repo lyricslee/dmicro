@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 这里就是 http 请求路径对应的 handler 处理方法了。
 func RegisterPassportRouter(g *gin.RouterGroup, c *controller.PassportController) {
 	POST(g, "/passport/Login", c.Login, "用户登入")
 	POST(g, "/passport/Sms", c.Sms, "获取验证码")

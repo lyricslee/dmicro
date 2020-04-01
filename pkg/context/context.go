@@ -27,6 +27,7 @@ func (c *DmContext) Query(key string) string {
 	return c.gctx.Query(key)
 }
 
+// 请求参数 Json 转换成 obj 对象
 func (c *DmContext) ParseJSON(obj interface{}) error {
 	if err := c.gctx.ShouldBindJSON(obj); err != nil {
 		return err
