@@ -19,7 +19,7 @@ func toContext(mctx *mxcontext.DmContext) context.Context {
 	mda, _ := metadata.FromContext(ctx)
 	md := metadata.Copy(mda)
 
-	// 删除掉 trace_id
+	// 删除掉 trace_id, 这里可能有 "Uber-Trace-Id"  和 "Uber-trace-Id" 的混乱问题
 	delete(mctx.Context().Request.Header, "Uber-Trace-Id")
 	// set headers
 	for k, v := range mctx.Context().Request.Header {
