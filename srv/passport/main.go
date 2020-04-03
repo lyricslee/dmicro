@@ -28,6 +28,7 @@ func getClientID() (cid string) {
 		b   []byte
 	)
 
+	// cid 是个文件，内容：f509581d-34fa-4123-91a3-75e12a89f843
 	if f, err = os.OpenFile("cid", os.O_CREATE|os.O_RDWR, 0666); err != nil {
 		panic(err)
 	}
