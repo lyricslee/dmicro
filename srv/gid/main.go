@@ -31,6 +31,7 @@ func main() {
 
 	svc.Init(opts...)
 
+	// 初始化基本与 web/dd 这些类似，注册 RPC 对应的 handlers
 	// Register Handler
 	gid.RegisterGidHandler(svc.Server(), handler.GetGidHandler())
 
