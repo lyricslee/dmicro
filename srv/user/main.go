@@ -87,7 +87,7 @@ func main() {
 		constant.TOPIC_USER_CREATED,
 		svc.Server(),
 		handler.GetSubscriber().UserCreated(),
-		server.SubscriberQueue(config.StanBroker.Queue),
+		server.SubscriberQueue(config.StanBroker.Queue), // TODO
 	)
 	// 注册消费者 用户创建的消息
 	capx.RegisterConsumer(constant.TOPIC_USER_CREATED, handler.GetSubscriber().CapxUserCreated())

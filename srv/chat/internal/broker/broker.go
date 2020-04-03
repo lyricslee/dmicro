@@ -12,6 +12,7 @@ var (
 	onceB sync.Once
 )
 
+// Broker Init
 func GetBroker() broker.Broker {
 	onceB.Do(func() {
 		b = nats.NewBroker(broker.Addrs(config.NatsBroker.Addrs...))
