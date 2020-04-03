@@ -53,10 +53,11 @@ func main() {
 	// Logger
 	log.Init(config.Logger)
 
+	// passport main.go 与之前 wed/dd 的基本一样，就是初始化配置 服务等。
 	svc := service.NewService()
 
 	var opts []micro.Option
-	// Tracer
+	// Tracer init
 	t, err := tracer.Init(config.Micro.ServerName, config.Tracer.Addr)
 	if err != nil {
 		log.Error(err)
@@ -64,9 +65,10 @@ func main() {
 	opts = append(opts, micro.WrapHandler(opentracing.NewHandlerWrapper(t)))
 
 	// stan
+	// 这里多了一个 broker 的初始化，连接到 broker (nats) 集群上。
 	b := stan.NewBroker(
 		broker.Addrs(config.StanBroker.Addrs...),
-		stan.ClientID(getClientID()),
+		stan.ClientID(getClientID()), // 本客户端的唯一 id
 		stan.ClusterID(config.StanBroker.ClusterID),
 		stan.ConnectRetry(true),
 	)
@@ -78,8 +80,11 @@ func main() {
 	client.Init(svc)
 
 	// Register Handler
+	// 初始化 passport 的 handler，也就是 RPC 调用方法对应的处理函数。
 	passport.RegisterPassportHandler(svc.Server(), handler.GetPassportHandler())
 
+	// ORM Mysql 初始化
+	// capx 模块内部一个 	go sending(） 和一个 go consuming() routine 负载数据库具体读写操作
 	capx.Init(dao.GetEngine())
 
 	if err := svc.Run(); err != nil {

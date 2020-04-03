@@ -167,3 +167,5 @@
   }
 }
 ```
+
+![](./mindmap distributed system.png)

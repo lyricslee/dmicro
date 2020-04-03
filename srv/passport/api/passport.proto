@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package go.micro.srv.passport;
 
+//  api/passport.proto 定义了 handler 对应的处理接口和字段
+
 service Passport {
 	rpc Sms(Request) returns (Response) {}
 	rpc SmsLogin(SmsLoginRequest) returns (SmsLoginResponse) {}

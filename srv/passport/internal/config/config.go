@@ -31,6 +31,7 @@ type stanBroker struct {
 	Queue       string   `json:"queue,omitempty"`
 }
 
+// 配置文件的加载
 func Init() {
 	config.Init()
 

@@ -9,15 +9,18 @@ import (
 	"dmicro/srv/passport/internal/service"
 )
 
+// handler 实际上是调用了对应的额 passport service API
+// handler 调用 service 里面的具体方法来执行操作, 这样做的好处就是把接口和实现分离。类似于 http 中的 router 作用。
 type PassportHandler struct {
 	svc *service.PassportService
 }
 
 var (
 	passportHandler     *PassportHandler
-	oncePassportHandler sync.Once
+	oncePassportHandler sync.Once // 只初始化一次
 )
 
+// 只初始化一次
 func GetPassportHandler() *PassportHandler {
 	oncePassportHandler.Do(func() {
 		passportHandler = &PassportHandler{svc: service.GetPassportService()}
@@ -25,6 +28,7 @@ func GetPassportHandler() *PassportHandler {
 	return passportHandler
 }
 
+// api/passport.proto 对应的各个协议字段和接口
 func (h *PassportHandler) Sms(ctx context.Context, req *passport.Request, rsp *passport.Response) error {
 	log.Debugf("Sms: mobile=%s", req.Mobile)
 	// TODO: 通过短信服务获取验证码

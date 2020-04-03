@@ -6,6 +6,7 @@ import (
 
 type TxFn func(*xorm.Session) error
 
+// 事务函数
 func ExecWithTransaction(session *xorm.Session, fn TxFn) (err error) {
 	if err = session.Begin(); err != nil {
 		return

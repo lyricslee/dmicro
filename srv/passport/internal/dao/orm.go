@@ -15,6 +15,7 @@ var (
 	onceEngine sync.Once
 )
 
+// ORM Engin 数据库操作初始化
 func GetEngine() *xorm.Engine {
 	onceEngine.Do(func() {
 		c := orm.Config{

@@ -6,7 +6,7 @@ micro:
   register_interval: 15
   registry: etcd
   registry_address:
-    - "192.168.56.189:2379"
+    - "192.168.2.125:2379"
 logger:
   level: "debug"
   filename: "app.log"
@@ -15,14 +15,14 @@ logger:
   max_age: 7
   compress: false
 tracer:
-  addr: "192.168.56.189:6831"
+  addr: "192.168.2.125:6831"
 stan:
   addrs:
-    - "nats://192.168.56.189:4222"
+    - "nats://192.168.2.125:4222"
   cluster_id: "test-cluster"
 mysql:
-  data_source: "root:123456@tcp(192.168.56.189:3306)/dm_passport"
+  data_source: "root:123456@tcp(192.168.2.125:13306)/dm_passport"
 redis:
-  addr: "192.168.56.189:6379"
+  addr: "192.168.2.125:6379"
   password: "123456"
   db: 0

@@ -6,7 +6,7 @@ micro:
   register_interval: 15
   registry: etcd # 用于服务发现，向 etcd 注册本 service 的地址和名字
   registry_address:
-    - "192.168.56.189:2379"
+    - "192.168.2.125:2379"
 logger:
   level: "debug"
   filename: "app.log"
@@ -15,4 +15,4 @@ logger:
   max_age: 7
   compress: false
 tracer:
-  addr: "192.168.56.189:6831"
+  addr: "192.168.2.125:6831"

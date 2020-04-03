@@ -9,6 +9,7 @@ import (
 type UserRepo struct {
 }
 
+// User 这个表的 ORM 操作
 var (
 	userRepo *UserRepo
 	onceUser sync.Once

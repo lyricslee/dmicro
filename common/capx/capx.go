@@ -17,6 +17,7 @@ import (
 var engine *xorm.Engine
 var b broker.Broker
 
+// 本地事务消息表
 func TxStorePublished(session *xorm.Session, id int64, topic string, pb interface{}) (err error) {
 	var msg []byte
 	if msg, err = proto.Marshal(pb.(proto.Message)); err != nil {
