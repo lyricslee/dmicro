@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// 用户表结构
 type User struct {
 	Id        int64     `json:"id,omitempty" xorm:"pk BIGINT(20)"`
 	CreatedAt time.Time `json:"created_at,omitempty" xorm:"not null created DATETIME"`

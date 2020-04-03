@@ -64,7 +64,10 @@ func main() {
 	}
 	opts = append(opts, micro.WrapHandler(opentracing.NewHandlerWrapper(t)))
 
-	// stan
+	// 1. 初始化 nats broker 连接
+	// 设置 nats broker ClientID，有效时长。
+	// clientID 和 durableName 对于NATS Streaming非常重要. 要让subscriber重启后能继续
+	// 收到重启期间发过来的消息且不重复消息
 	b := stan.NewBroker(
 		broker.Addrs(config.StanBroker.Addrs...),
 		stan.ClientID(getClientID()),
@@ -78,14 +81,17 @@ func main() {
 
 	// Register Handler
 	user.RegisterUserHandler(svc.Server(), handler.GetUserHandler())
+
+	// 2. 初始化完成后订阅消息, 用户创建消息和对应的 handler。
 	micro.RegisterSubscriber(
 		constant.TOPIC_USER_CREATED,
 		svc.Server(),
 		handler.GetSubscriber().UserCreated(),
 		server.SubscriberQueue(config.StanBroker.Queue),
 	)
+	// 注册消费者 用户创建的消息
 	capx.RegisterConsumer(constant.TOPIC_USER_CREATED, handler.GetSubscriber().CapxUserCreated())
-
+    // 初始化 MySQL Engine
 	capx.Init(dao.GetEngine())
 
 	if err := svc.Run(); err != nil {

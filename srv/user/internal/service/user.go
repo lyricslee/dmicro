@@ -23,6 +23,7 @@ func GetUserService() *UserService {
 	return userService
 }
 
+// user Create
 func (s *UserService) Create(uid int64, mobile string) error {
 	u := &model.User{Id: uid, Mobile: mobile}
 	return s.userRepo.Add(u)

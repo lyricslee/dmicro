@@ -24,6 +24,8 @@ func GetUserRepo() *UserRepo {
 	return userRepo
 }
 
+// 用户 user 表和操作
+
 func (r *UserRepo) Add(user *model.User) (err error) {
 	if _, err = GetEngine().InsertOne(user); err != nil {
 		return

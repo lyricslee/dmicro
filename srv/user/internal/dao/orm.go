@@ -15,6 +15,8 @@ var (
 	onceEngine sync.Once
 )
 
+// ORM Engine config
+
 func GetEngine() *xorm.Engine {
 	onceEngine.Do(func() {
 		c := orm.Config{

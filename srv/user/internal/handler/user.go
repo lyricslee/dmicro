@@ -25,6 +25,7 @@ func GetUserHandler() *UserHandler {
 	return userHandler
 }
 
+// 用户创建的 Handler
 func (h *UserHandler) Create(ctx context.Context, req *user.Request, rsp *user.Response) (err error) {
 	if err = h.svc.Create(req.Uid, req.Mobile); err != nil {
 		log.Debug(err)
