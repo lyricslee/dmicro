@@ -21,6 +21,7 @@ type natsBroker struct {
 	Addrs []string `json:"addrs,omitempty"`
 }
 
+// 配置文件加载
 func Init() {
 	config.Init()
 

@@ -29,7 +29,7 @@ func handleReq(ctx context.Context, msg *topic.L2A) (err error) {
 	req.Appid = msg.Appid
 	req.Uid = msg.Uid
 	req.Platform = msg.Platform
-	req.Type = constant.RSP
+	req.Type = constant.RSP // TODO Response 
 
 	// TODO: 实际应用中要解析Cmd做不同的业务处理，这里简单的回射消息
 	req.Cmd = msg.Cmd

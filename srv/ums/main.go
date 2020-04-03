@@ -28,6 +28,7 @@ func main() {
 	if err != nil {
 		log.Error(err)
 	}
+	// 注册 trace broker 等
 	opts = append(opts, micro.WrapHandler(opentracing.NewHandlerWrapper(t)))
 	opts = append(opts, micro.Broker(broker.GetBroker()))
 
