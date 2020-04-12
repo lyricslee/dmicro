@@ -352,7 +352,8 @@ func (p *PassportService) register(ctx context.Context, appid int, plat int, mob
 			ExpiresAt:    time.Now().Unix() + TokenExpiresIn,
 		}
 
-		// 分布式事务处理
+		// 分布式事务处理演示：上面代码已经插入 user 了，这里实际上不需要重复插入。
+		// 这里的 user 事务消息仅仅是为了演示分布式事务。
 		// 发布 topic.user.created 事件
 		msg = &topic.UserCreated{
 			Id:    rsp.Ids[1],
