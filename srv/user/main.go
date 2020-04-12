@@ -83,13 +83,16 @@ func main() {
 	user.RegisterUserHandler(svc.Server(), handler.GetUserHandler())
 
 	// 2. 初始化完成后订阅消息, 用户创建消息和对应的 handler。
+	// 因为 Nats/Kafak 都是 topic->queue->groups 的消息模型，不保证 topic 级别的有序性，
+	// 只保证 queue 的有序性，所以这里需要指定 config.StanBroker.Queue
 	micro.RegisterSubscriber(
 		constant.TOPIC_USER_CREATED,
 		svc.Server(),
 		handler.GetSubscriber().UserCreated(),
-		server.SubscriberQueue(config.StanBroker.Queue), // TODO
+		server.SubscriberQueue(config.StanBroker.Queue),
 	)
 	// 注册消费者 用户创建的消息
+	// 本地事务消息表中存储 TOPIC_USER_CREATED 消息
 	capx.RegisterConsumer(constant.TOPIC_USER_CREATED, handler.GetSubscriber().CapxUserCreated())
     // 初始化 MySQL Engine
 	capx.Init(dao.GetEngine())
