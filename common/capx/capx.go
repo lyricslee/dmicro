@@ -68,7 +68,11 @@ func StoreReceived(id int64, topic string, pb interface{}) (err error) {
 func Publish(id int64, topic string, msg interface{}) error {
 	log.Debugf("publish topic %s", topic)
 
-	p := micro.NewEvent(topic, client.DefaultClient)
+	// PubSub at the client/server level works much like RPC but for async comms.
+	// 因为 go-micro 是事件驱动实现的异步消息框架，默认 client 是 RPC 调用但是异步的。
+	// https://github.com/micro/examples/tree/master/pubsub
+	// PubSub 可以指定 topic + 对应的 client (RPC Broker 都可以)
+	p := micro.NewEvent(topic, client.DefaultClient) // RPC
 	if err := p.Publish(context.Background(), msg); err != nil {
 		log.Error("publish err:", err)
 		updatePublished(id, map[string]interface{}{"status": 2})
@@ -80,6 +84,9 @@ func Publish(id int64, topic string, msg interface{}) error {
 	}
 }
 
+// 分布式事务表分了两种：
+// 1. sending() 从 Mysql 表中读取要发送的 Topic 数据，然后发送 topic 的 RPC 请求。
+// 2. consuming() 从 Mysql 表中读取别的服务写入的 Topic 数据，然后调用本地对应的处理函数来处理。
 func Init(e *xorm.Engine) {
 	engine = e
 	go sending()
@@ -107,6 +114,7 @@ func TxConsumed(session *xorm.Session, id int64) error {
 
 type ConsumerFn func(proto.Message) error
 
+// 这里的 consumers topic 和对应的消费函数是保存在内存中的
 var consumers = map[string]ConsumerFn{}
 
 func RegisterConsumer(name string, fn ConsumerFn) {

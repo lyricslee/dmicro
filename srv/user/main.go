@@ -79,9 +79,10 @@ func main() {
 
 	svc.Init(opts...)
 
-	// Register Handler
+	// 第一种：RPC Register Handler
 	user.RegisterUserHandler(svc.Server(), handler.GetUserHandler())
 
+	// 第二种：MQ 异步消息
 	// 2. 初始化完成后订阅消息, 用户创建消息和对应的 handler。
 	// 因为 Nats/Kafak 都是 topic->queue->groups 的消息模型，不保证 topic 级别的有序性，
 	// 只保证 queue 的有序性，所以这里需要指定 config.StanBroker.Queue
@@ -91,8 +92,9 @@ func main() {
 		handler.GetSubscriber().UserCreated(),
 		server.SubscriberQueue(config.StanBroker.Queue),
 	)
-	// 注册消费者 用户创建的消息
-	// 本地事务消息表中存储 TOPIC_USER_CREATED 消息
+	// 第三种：consumers topic 对应的处理函数注册, 由 Mysql 的表数据触发。
+	// 注册消费者 用户创建的消息，注册消息处理函数。
+	// 本地事务消息表中存储 TOPIC_USER_CREATED 消息，这里是 RPC 消息重试不是 MQ。
 	capx.RegisterConsumer(constant.TOPIC_USER_CREATED, handler.GetSubscriber().CapxUserCreated())
     // 初始化 MySQL Engine
 	capx.Init(dao.GetEngine())
