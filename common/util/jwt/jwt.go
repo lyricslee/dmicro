@@ -19,6 +19,7 @@ type UserClaims struct {
 	Info *UserInfo
 }
 
+// JWT 生成 token
 func Encode(privateKey *rsa.PrivateKey, userInfo *UserInfo, expiresIn int) (string, error) {
 	claims := UserClaims{
 		StandardClaims: jwt.StandardClaims{
@@ -31,6 +32,7 @@ func Encode(privateKey *rsa.PrivateKey, userInfo *UserInfo, expiresIn int) (stri
 	return token.SignedString(privateKey)
 }
 
+// JWT 验证 token
 func Decode(publicKey *rsa.PublicKey, tokenString string) (*UserInfo, error) {
 	token, err := jwt.ParseWithClaims(
 		tokenString,

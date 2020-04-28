@@ -41,6 +41,7 @@ func StartSpanFromContext(ctx context.Context, tracer opentracing.Tracer, name s
 	sp := tracer.StartSpan(name, opts...)
 
 	delete(md, "Uber-Trace-Id")
+	// trace 追踪注入
 	if err := sp.Tracer().Inject(sp.Context(), opentracing.TextMap, opentracing.TextMapCarrier(md)); err != nil {
 		return nil, nil, err
 	}
@@ -109,6 +110,7 @@ func NewCallWrapper(ot opentracing.Tracer) client.CallWrapper {
 }
 
 // NewHandlerWrapper accepts an opentracing Tracer and returns a Handler Wrapper
+// Trace Inject
 func NewHandlerWrapper(ot opentracing.Tracer) server.HandlerWrapper {
 	return func(h server.HandlerFunc) server.HandlerFunc {
 		return func(ctx context.Context, req server.Request, rsp interface{}) error {

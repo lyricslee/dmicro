@@ -21,6 +21,7 @@ import (
 	"dmicro/srv/passport/internal/handler"
 )
 
+// 生成 uuid 之后保存在 cid 文件中，这样每次客户端启动都是相同的 cid，broker 就可以找到相同的 clientId 了。
 func getClientID() (cid string) {
 	var (
 		f   *os.File
@@ -63,6 +64,7 @@ func main() {
 	if err != nil {
 		log.Error(err)
 	}
+	// trace Inject 的地方
 	opts = append(opts, micro.WrapHandler(opentracing.NewHandlerWrapper(t)))
 
 	// stan
