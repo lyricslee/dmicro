@@ -311,6 +311,8 @@ func (p *PassportService) register(ctx context.Context, appid int, plat int, mob
 	)
 	// 执行本地事务
 	// 事务包含：1. 创建用户 2. 向 redis 中插入双 token 3. 本地事务消息表插入该事务
+	// 这里事务内必须包含往本地消息表插入该事务，如果直接写入 MQ 就不能保证该事务性。
+	// 因为 MQ 可能出现写入失败的情况导致，本地事务执行了。但是远程事务没有收到消息。
 	err = tx.ExecWithTransaction(session, func(session *xorm.Session) error {
 		// user表
 		u := &model.User{

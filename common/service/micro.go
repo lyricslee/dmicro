@@ -17,6 +17,7 @@ type service struct {
 	micro.Service
 }
 
+// service
 func NewService() *service {
 	s := &service{Service: micro.NewService()}
 	var opts []micro.Option

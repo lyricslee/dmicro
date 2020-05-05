@@ -16,6 +16,7 @@ import (
 
 type Passport struct{}
 
+// 请求 handler 调用后台 Passport 对应的 RPC handler
 func (this *Passport) Sms(ctx context.Context, req *api.Request, rsp *api.Response) error {
 	log.Debug("sms...")
 

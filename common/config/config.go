@@ -76,7 +76,9 @@ type Hystrix struct {
 	ErrorPercentThreshold  int `json:"error_percent_threshold,omitempty"`
 }
 
+// load configs from yml
 func Init() {
+	// 配置的名称 类型 路径
 	viper.SetConfigName("app")
 	viper.AddConfigPath("./conf")
 	viper.SetConfigType("yml")

@@ -7,6 +7,7 @@ import (
 	"github.com/micro/go-micro/v2/errors"
 )
 
+// http body with Error 499
 func MakeErrBody(err error) (code int, body string) {
 	e := errors.Parse(err.Error())
 
@@ -28,6 +29,7 @@ func MakeErrBody(err error) (code int, body string) {
 	return
 }
 
+// http body with 200
 func MakeBody(obj interface{}) (code int, body string) {
 	if obj == nil {
 		obj = make(map[string]interface{})

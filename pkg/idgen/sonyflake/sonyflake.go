@@ -170,6 +170,7 @@ func Decompose(id uint64) map[string]uint64 {
 	const maskSequence = uint64((1<<BitLenSequence - 1) << BitLenMachineID)
 	const maskMachineID = uint64(1<<BitLenMachineID - 1)
 
+	// 一个 id 的组成：msb + timestamp + sequence + machineID
 	msb := id >> BitLen
 	time := id >> (BitLenSequence + BitLenMachineID)
 	sequence := id & maskSequence >> BitLenMachineID

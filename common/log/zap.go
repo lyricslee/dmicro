@@ -13,6 +13,7 @@ import (
 	"dmicro/common/config/env"
 )
 
+// 默认 debug level
 var defaultLoggerConfig = config.Logger{
 	Level:      "debug",
 	Filename:   "app.log",
@@ -24,6 +25,7 @@ var defaultLoggerConfig = config.Logger{
 
 var logger *zap.SugaredLogger
 
+// Log level
 func getLevel(level string) zapcore.Level {
 	switch level {
 	case "debug":
@@ -85,6 +87,7 @@ func Init(conf *config.Logger) {
 		zap.AddCaller(),
 	)
 
+	// defer with recover(): panic error
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {

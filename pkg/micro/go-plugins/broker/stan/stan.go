@@ -17,6 +17,7 @@ import (
 	stan "github.com/nats-io/stan.go"
 )
 
+// Broker 配置信息 对象等
 type stanBroker struct {
 	sync.RWMutex
 	addrs          []string

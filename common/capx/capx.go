@@ -40,6 +40,7 @@ func TxStorePublished(session *xorm.Session, id int64, topic string, pb interfac
 	return
 }
 
+// 存储从 MQ 中收到的事务消息
 func StoreReceived(id int64, topic string, pb interface{}) (err error) {
 	if ok, _ := engine.Exist(&model.Received{Id: id}); ok {
 		return fmt.Errorf("msg id=%d exist", id)
@@ -73,6 +74,7 @@ func Publish(id int64, topic string, msg interface{}) error {
 	// https://github.com/micro/examples/tree/master/pubsub
 	// PubSub 可以指定 topic + 对应的 client (RPC Broker 都可以)
 	p := micro.NewEvent(topic, client.DefaultClient) // RPC
+	// 投递的时候扔到 MQ
 	if err := p.Publish(context.Background(), msg); err != nil {
 		log.Error("publish err:", err)
 		updatePublished(id, map[string]interface{}{"status": 2})

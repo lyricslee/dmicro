@@ -11,6 +11,7 @@ func New(ctx *gin.Context) *DmContext {
 	return &DmContext{gctx: ctx}
 }
 
+// gin.Context 处理，http 请求和返回的一些处理函数。
 type DmContext struct {
 	gctx *gin.Context
 }

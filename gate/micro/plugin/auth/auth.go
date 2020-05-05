@@ -21,6 +21,8 @@ type auth struct {
 	passportClient passport.PassportService
 }
 
+// newPlugin with auth
+// Options 就是该插件的参数，目前只有 SkipperFunc 就是处理函数了。
 func newPlugin(opts ...Option) plugin.Plugin {
 	options := newOptions(opts...)
 	return &auth{
@@ -28,6 +30,7 @@ func newPlugin(opts ...Option) plugin.Plugin {
 	}
 }
 
+// plugin.Plugin require Flags(), Commands(), Handler() and so on....
 func (*auth) Flags() []cli.Flag {
 	return nil
 }
@@ -36,6 +39,8 @@ func (*auth) Commands() []*cli.Command {
 	return nil
 }
 
+// auth handler
+// Auth 认证模块，可能用的 Token 或者 Session 认证机制。
 func (a *auth) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +54,7 @@ func (a *auth) Handler() plugin.Handler {
 			cx := ctx.FromRequest(r)
 			var err error
 
+			// 1. Token 认证机制
 			if token := strings.Join(r.Header["Token"], ","); token != "" {
 				// Token
 				log.Debug("AuthToken...")
@@ -61,6 +67,7 @@ func (a *auth) Handler() plugin.Handler {
 				}
 				err = e
 			} else {
+				// 2. SESSION 认证机制，从 Cookie 中读取 SESSION。
 				// Cookie
 				cookie, _ := r.Cookie("SESSION")
 				val, _ := url.QueryUnescape(cookie.Value)

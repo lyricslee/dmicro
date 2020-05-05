@@ -13,6 +13,7 @@ var (
 	PassportClient passport.PassportService
 )
 
+// init RPC clients
 func Init(service micro.Service) {
 	cli := grpc.NewClient(
 		client.Registry(service.Options().Registry),

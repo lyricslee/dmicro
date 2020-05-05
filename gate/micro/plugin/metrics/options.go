@@ -6,6 +6,7 @@ type Options struct {
 	skipperFunc plugin.SkipperFunc
 }
 
+// Option for monitor system
 type Option func(*Options)
 
 func newOptions(opts ...Option) Options {

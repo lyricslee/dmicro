@@ -22,6 +22,7 @@ func initPlugin() {
 	initAuth()
 }
 
+// 前缀检查
 func checkPrefix(s string, prefixes ...string) bool {
 	for _, p := range prefixes {
 		if strings.HasPrefix(s, p) {
@@ -31,6 +32,9 @@ func checkPrefix(s string, prefixes ...string) bool {
 	return false
 }
 
+// 注册认证函数：网关统一认证，API/URL 权限检查等。
+// web: web 控制台
+// api: api 网关
 func initAuth() {
 	_ = web.Register(auth.NewPlugin(
 		auth.WithSkipperFunc(func(r *http.Request) bool {
@@ -73,6 +77,7 @@ func initAuth() {
 
 }
 
+// breaker init
 func initBreaker() {
 	_ = web.Register(breaker.NewPlugin(
 		breaker.WithSkipperFunc(func(r *http.Request) bool {
@@ -94,6 +99,7 @@ func initBreaker() {
 	))
 }
 
+// Init metrics
 func initMetrics() {
 	_ = web.Register(metrics.NewPlugin())
 
@@ -101,6 +107,7 @@ func initMetrics() {
 
 }
 
+// Init with WithSkipperFunc and WithTracer
 func initTrace() {
 	webTracer, _ := tracer.Init("go.micro.web", config.Tracer.Addr)
 	_ = web.Register(trace.NewPlugin(

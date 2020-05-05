@@ -1,5 +1,6 @@
 package constant
 
+// topic 消息类型
 const (
 	TOPIC_USER_LOGIN   string = "topic.user.login"
 	TOPIC_USER_CREATED string = "topic.user.created"

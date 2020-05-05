@@ -28,6 +28,7 @@ func main() {
 	if err != nil {
 		log.Error(err)
 	}
+	// 注入 trace 信息
 	opts = append(opts, micro.WrapHandler(opentracing.NewHandlerWrapper(t)))
 
 	svc.Init(opts...)

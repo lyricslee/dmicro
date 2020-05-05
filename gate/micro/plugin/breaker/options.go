@@ -6,6 +6,7 @@ type Options struct {
 	skipperFunc plugin.SkipperFunc
 }
 
+// Option for Plugin
 type Option func(*Options)
 
 func newOptions(opts ...Option) Options {
@@ -16,6 +17,7 @@ func newOptions(opts ...Option) Options {
 	return opt
 }
 
+// skipperFunc register
 func WithSkipperFunc(skipperFunc plugin.SkipperFunc) Option {
 	return func(o *Options) {
 		o.skipperFunc = skipperFunc

@@ -69,6 +69,7 @@ func (*trace) String() string {
 	return "trace"
 }
 
+// 可变参数 ... 多个 Option
 func NewPlugin(opts ...Option) plugin.Plugin {
 	return newPlugin(opts...)
 }

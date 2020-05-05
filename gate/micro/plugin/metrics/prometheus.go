@@ -9,6 +9,7 @@ import (
 )
 
 // https://www.cnblogs.com/chenqionghe/p/10494868.html
+// metrics 监控指标
 type metrics struct {
 	opts Options
 }
