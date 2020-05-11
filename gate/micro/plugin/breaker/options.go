@@ -23,3 +23,4 @@ func WithSkipperFunc(skipperFunc plugin.SkipperFunc) Option {
 		o.skipperFunc = skipperFunc
 	}
 }
+
